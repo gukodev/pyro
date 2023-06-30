@@ -1,15 +1,17 @@
-import { Raleway } from 'next/font/google'
+import clsx from 'clsx'
+import { Alexandria } from 'next/font/google'
+import './globals.css'
 
-const raleway = Raleway({ subsets: ['latin'] })
+const font = Alexandria({ subsets: ['latin'] })
 
 export const metadata = {
-    title: 'colori',
+    title: 'pyro',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang='pt-BR'>
-            <body className={raleway.className}>{children}</body>
+            <body className={clsx(font.className, 'bg-slate-100')}>{children}</body>
         </html>
     )
 }
