@@ -25,7 +25,7 @@ export async function GET(req: Request) {
         // console.log(`[cached] ${end.getTime() - start.getTime()}ms`)
 
         return NextResponse.json({
-            hex: `#${hex}`,
+            hex,
             name,
             refreshAt,
         })
@@ -52,9 +52,5 @@ export async function GET(req: Request) {
     // const end = new Date()
     // console.log(`[read] ${end.getTime() - start.getTime()}ms`)
 
-    return NextResponse.json({
-        hex: `#${hex}`,
-        name,
-        refreshAt,
-    })
+    return NextResponse.json(data)
 }
