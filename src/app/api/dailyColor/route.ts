@@ -1,11 +1,11 @@
+import { ColorInfo, getColorInfo, getColorNames } from '@/util/color'
 import { getTodayDate } from '@/util/date'
-import { createCacheFile, getCacheFile, getColorNames } from '@/util/file'
+import { createCacheFile, getCacheFile } from '@/util/file'
 import fs from 'fs'
 import { NextResponse } from 'next/server'
 
 interface CachedFile {
-    hex: string
-    name: string
+    info: ColorInfo
     generatedAt: string
 }
 
@@ -19,14 +19,13 @@ export async function GET(req: Request) {
     const refreshAt = unixTs + 86400
 
     if (fs.existsSync(cachedFile)) {
-        const { hex, name } = JSON.parse(fs.readFileSync(cachedFile, 'utf-8')) as CachedFile
+        const { info } = JSON.parse(fs.readFileSync(cachedFile, 'utf-8')) as CachedFile
 
         // const end = new Date()
         // console.log(`[cached] ${end.getTime() - start.getTime()}ms`)
 
         return NextResponse.json({
-            hex,
-            name,
+            info,
             refreshAt,
         })
     }
@@ -34,11 +33,10 @@ export async function GET(req: Request) {
     const colorNames = Object.entries(getColorNames())
 
     const rndIndex = unixTs % colorNames.length
-    const [hex, name] = colorNames[rndIndex]
+    const [hex] = colorNames[rndIndex]
 
     const data: CachedFile = {
-        hex: `#${hex}`,
-        name,
+        info: getColorInfo(hex),
         generatedAt: new Date().toISOString(),
     }
 
@@ -52,5 +50,8 @@ export async function GET(req: Request) {
     // const end = new Date()
     // console.log(`[read] ${end.getTime() - start.getTime()}ms`)
 
-    return NextResponse.json(data)
+    return NextResponse.json({
+        info: data.info,
+        refreshAt,
+    })
 }
