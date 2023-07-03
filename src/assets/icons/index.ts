@@ -1,3 +1,5 @@
+'use client'
+
 import Palette from './Palette'
 import Shuffle from './Shuffle'
 

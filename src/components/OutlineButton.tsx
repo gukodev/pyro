@@ -1,26 +1,19 @@
 import clsx from 'clsx'
 
 interface OutlineButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    primary?: boolean
+    theme?: 'red' | 'light' | 'dark'
     children: React.ReactNode
     className?: string
 }
 
-export default function OutlineButton({
-    children,
-    className,
-    primary,
-    ...rest
-}: OutlineButtonProps) {
-    const outlineRed = [
-        'enabled:hover:bg-red-200/25',
-        'enabled:text-red-500 enabled:border-red-500',
-    ]
+const themes = {
+    red: ['enabled:hover:bg-red-200/25', 'enabled:text-red-500 enabled:border-red-500'],
+    light: ['enabled:hover:bg-slate-200/25', 'enabled:text-white enabled:border-slate-200'],
+    dark: ['enabled:hover:bg-black/25', 'enabled:text-black enabled:border-black'],
+}
 
-    const outlineGray = [
-        'enabled:hover:bg-slate-200/25',
-        'enabled:text-white enabled:border-slate-200',
-    ]
+export default function OutlineButton({ children, className, theme, ...rest }: OutlineButtonProps) {
+    const currentTheme = themes[theme ?? 'light']
 
     return (
         <button
@@ -28,7 +21,7 @@ export default function OutlineButton({
             className={clsx(
                 'inline-flex gap-2 p-3 items-center leading-0 rounded-2xl font-semibold selection-none border-2 transition-colors',
                 'enabled:cursor-pointer disabled:cursor-not-allowed bg-transparent disabled:text-gray-500',
-                primary ? outlineRed : outlineGray,
+                currentTheme,
                 className
             )}
         >

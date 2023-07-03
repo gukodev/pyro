@@ -1,7 +1,8 @@
 import { Hsl, Hsv, Rgb, differenceCiede2000, hsl, hsv, nearest, rgb } from 'culori'
 import fs from 'fs'
 import path from 'path'
-import { getExecTime, initExecTime } from './date'
+import { getTodayDate } from './date'
+import { createCacheFile, getCacheFile } from './file'
 
 export interface ColorNames {
     [hex: string]: string
@@ -20,9 +21,15 @@ export interface ColorInfo {
     returnNamedColorExecTime?: number
 }
 
-let colorNames: ColorNames | null = null
+export interface DailyColorData {
+    info: ColorInfo
+    refreshAt: number
+}
 
 export const COLORNAMES_PATH = path.resolve('src/assets/data/colornames.min.json')
+
+// Memory cache
+let colorNames: ColorNames | null = null
 
 export function getColorNames(): ColorNames {
     if (!colorNames) {
@@ -33,6 +40,7 @@ export function getColorNames(): ColorNames {
     return colorNames
 }
 
+// Generates a random color by generating a random hex value
 export function randomHexColor(length: number): string[] {
     function generateRandomHexColor(): string {
         const randomColor = Math.floor(Math.random() * 16777215).toString(16)
@@ -49,27 +57,14 @@ export function randomHexColor(length: number): string[] {
     return colors
 }
 
-export function getColorInfo(hex: string, benchmark: boolean = false): ColorInfo {
+export function getColorInfo(hex: string): ColorInfo {
     if (hex.startsWith('#')) hex.slice(1)
 
-    if (benchmark) initExecTime('cInfoGeneral')
-    let getColorNamesExecTime: number | undefined,
-        colorObjectKeysExecTime: number | undefined,
-        returnNamedColorExecTime: number | undefined
-
-    if (benchmark) initExecTime('getColorNames')
     const rawColors = getColorNames()
-    if (benchmark) getColorNamesExecTime = getExecTime('getColorNames')
-
-    if (benchmark) initExecTime('colorObjectKeys')
     const colors = Object.keys(rawColors)
-    if (benchmark) colorObjectKeysExecTime = getExecTime('colorObjectKeys')
 
-    if (benchmark) initExecTime('nearestNamedColor')
     const nearestNamedColor = nearest(colors, differenceCiede2000())
     const cNearest = nearestNamedColor(hex, 1)[0]
-
-    if (benchmark) returnNamedColorExecTime = getExecTime('nearestNamedColor')
 
     const colorInfo: ColorInfo = {
         name: rawColors[cNearest],
@@ -80,12 +75,56 @@ export function getColorInfo(hex: string, benchmark: boolean = false): ColorInfo
         hsv: hsv(hex),
     }
 
-    if (benchmark) {
-        colorInfo.totalExecTime = getExecTime('cInfoGeneral')
-        colorInfo.getColorNamesExecTime = getColorNamesExecTime
-        colorInfo.colorObjectKeysExecTime = colorObjectKeysExecTime
-        colorInfo.returnNamedColorExecTime = returnNamedColorExecTime
+    return colorInfo
+}
+
+interface CachedFile {
+    info: ColorInfo
+    generatedAt: string
+}
+
+export function getDailyColor(): DailyColorData {
+    const date = getTodayDate()
+    const unixTs = Math.floor(date.getTime() / 1000)
+
+    const cachedFile = getCacheFile(`daily-color-${unixTs}.json`)
+    const refreshAt = unixTs + 86400
+
+    if (fs.existsSync(cachedFile)) {
+        const { info } = JSON.parse(fs.readFileSync(cachedFile, 'utf-8')) as CachedFile
+        return {
+            info,
+            refreshAt,
+        }
     }
 
-    return colorInfo
+    const colorNames = Object.entries(getColorNames())
+
+    const rndIndex = unixTs % colorNames.length
+    const [hex] = colorNames[rndIndex]
+
+    const data: CachedFile = {
+        info: getColorInfo(hex),
+        generatedAt: new Date().toISOString(),
+    }
+
+    try {
+        createCacheFile(`daily-color-${unixTs}.json`, JSON.stringify(data))
+    } catch (err) {
+        console.log('Could not create daily color cache file')
+        console.log(err)
+    }
+
+    return {
+        info: data.info,
+        refreshAt,
+    }
+}
+
+// Generates a random named color
+export function getRandomColor(): ColorInfo {
+    const colorNames = Object.entries(getColorNames())
+    const rndIndex = Math.floor(Math.random() * colorNames.length)
+    const [hex] = colorNames[rndIndex]
+    return getColorInfo(hex)
 }
