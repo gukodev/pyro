@@ -5,9 +5,10 @@ type CopyableProps = {
     text: string
     toCopy?: string
     copyText?: boolean
+    side?: 'left' | 'right'
 }
 
-export default function Copyable({ text, toCopy, copyText }: CopyableProps) {
+export default function Copyable({ text, toCopy, copyText, side = 'left' }: CopyableProps) {
     const doCopy = async () => {
         const success = await copy(copyText ? text : toCopy || text)
         if (success) return alert('Cor copiada com sucesso!')
@@ -19,8 +20,9 @@ export default function Copyable({ text, toCopy, copyText }: CopyableProps) {
             className='inline-flex items-center gap-2 hover:opacity-75 transition-opacity'
             onClick={() => doCopy()}
         >
-            <Copy weight='fill' size={18} />
+            {side === 'left' && <Copy size={18} weight='bold' />}
             {text}
+            {side === 'right' && <Copy size={18} weight='bold' />}
         </button>
     )
 }
