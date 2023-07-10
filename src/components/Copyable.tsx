@@ -2,16 +2,17 @@ import { Copy } from '@/assets/icons'
 import { copy } from '@/util/clipboard'
 
 type CopyableProps = {
-    text: string
-    toCopy?: string
-    copyText?: boolean
+    value: string
+    label?: string
     side?: 'left' | 'right'
 }
 
-export default function Copyable({ text, toCopy, copyText, side = 'left' }: CopyableProps) {
+const icon = <Copy size={18} weight='fill' />
+
+export default function Copyable({ value, label = value, side = 'left' }: CopyableProps) {
     const doCopy = async () => {
-        const success = await copy(copyText ? text : toCopy || text)
-        if (success) return alert('Cor copiada com sucesso!')
+        const success = await copy(value)
+        if (success) return alert('✅ Copiado com sucesso.')
         alert('Não foi possível copiar a cor.')
     }
 
@@ -20,9 +21,9 @@ export default function Copyable({ text, toCopy, copyText, side = 'left' }: Copy
             className='inline-flex items-center gap-2 hover:opacity-75 transition-opacity'
             onClick={() => doCopy()}
         >
-            {side === 'left' && <Copy size={18} weight='bold' />}
-            {text}
-            {side === 'right' && <Copy size={18} weight='bold' />}
+            {side === 'left' && icon}
+            {label}
+            {side === 'right' && icon}
         </button>
     )
 }
