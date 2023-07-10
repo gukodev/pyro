@@ -1,5 +1,6 @@
 import Button from '@/components/Button'
-import FeaturedColor from '@/components/FeaturedColor'
+import ColorCard from '@/components/FeaturedColor/ColorCard'
+import FeaturedColorInfo from '@/components/FeaturedColor/FeaturedColorInfo'
 import { getRandomColor } from '@/util/color'
 import { Palette, Shuffle } from './../assets/icons'
 
@@ -9,7 +10,7 @@ export default async function Home() {
     return (
         <main>
             <div className='w-full max-w-screen-lg mx-auto px-4'>
-                <div className='py-6 border-b-4 border-slate-200 flex items-center justify-between mb-10'>
+                <div className='py-6 border-b-4 border-slate-200 flex items-center justify-between mb-8'>
                     <h1 className='text-4xl font-bold'>🔥 pyro</h1>
                     <div className='flex items-center gap-4'>
                         <Button ghost>
@@ -22,14 +23,13 @@ export default async function Home() {
                         </Button>
                     </div>
                 </div>
-                <div>
-                    <div className='flex flex-col gap-4'>
-                        <div className='flex items-center gap-4'>
-                            <h1 className='text-6xl font-bold'>Cor destaque</h1>
-                            <p className='text-slate-400'>reseta em 2 horas</p>
-                        </div>
-                        <FeaturedColor data={data} />
+                <div className='flex flex-col gap-8'>
+                    <div className='flex items-center gap-4'>
+                        <h1 className='text-6xl font-bold'>Cor destaque</h1>
+                        <p className='text-slate-400'>reseta em 2 horas</p>
                     </div>
+                    <ColorCard data={data} />
+                    <FeaturedColorInfo data={data} />
                 </div>
             </div>
         </main>
