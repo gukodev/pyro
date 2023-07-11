@@ -1,8 +1,7 @@
 'use client'
 
 import { ColorInfo } from '@/util/color'
-import { formatHSL, formatHSV, formatRGB } from '@/util/colorFormat'
-import { Hsl, Hsv, Rgb } from 'culori'
+import { formatHSL, formatHSV } from '@/util/colorFormat'
 import Copyable from '../Copyable'
 
 interface FeaturedColorInfoProps {
@@ -26,15 +25,15 @@ export default function FeaturedColorInfo({ data }: FeaturedColorInfoProps) {
         },
         {
             label: 'RGB',
-            value: formatRGB(data.rgb as Rgb).join(', '),
+            value: Object.values(data.rgb).join(', '),
         },
         {
             label: 'HSL',
-            value: formatHSL(data.hsl as Hsl).join(', '),
+            value: Object.values(formatHSL(data.hsl)).join(', '),
         },
         {
             label: 'HSV',
-            value: formatHSV(data.hsv as Hsv).join(', '),
+            value: Object.values(formatHSV(data.hsv)).join(', '),
         },
     ]
 
