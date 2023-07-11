@@ -20,3 +20,13 @@ export function formatHSV(hsv: Hsv) {
     const value = Math.round(hsv.v * 100) + '%'
     return [hue, saturation, value]
 }
+
+export function removeHash(hex: string) {
+    if (hex.startsWith('#')) hex.slice(1)
+    return hex
+}
+
+export function addHash(hex: string) {
+    if (!hex.startsWith('#')) hex = '#' + hex
+    return hex
+}
