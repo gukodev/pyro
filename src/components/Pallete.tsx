@@ -17,7 +17,7 @@ export default function Pallete({ colors, linkColors = false, size = 'md' }: Pal
                 'w-full flex flex-1 transition-opacity',
                 index === 0 ? 'rounded-l-lg' : '',
                 index === colors.length - 1 ? 'rounded-r-lg' : '',
-                button ? 'hover:opacity-80 group items-center justify-center' : ''
+                button ? 'hover:opacity-75 group items-center justify-center' : ''
             ),
             style: { backgroundColor: color, height: `${height}px` },
         }
