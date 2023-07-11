@@ -15,8 +15,8 @@ export default function Pallete({ colors, linkColors = false, size = 'md' }: Pal
         return {
             className: clsx(
                 'w-full flex flex-1 transition-opacity',
-                index === 0 ? 'rounded-l-lg' : '',
-                index === colors.length - 1 ? 'rounded-r-lg' : '',
+                index === 0 ? 'rounded-l-2xl' : '',
+                index === colors.length - 1 ? 'rounded-r-2xl' : '',
                 button ? 'hover:opacity-75 group items-center justify-center' : ''
             ),
             style: { backgroundColor: color, height: `${height}px` },

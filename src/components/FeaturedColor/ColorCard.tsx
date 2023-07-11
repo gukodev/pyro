@@ -20,7 +20,7 @@ export default function ColorCard({ data }: ColorCardProps) {
 
     return (
         <div
-            className='relative w-full h-72 rounded-3xl p-4 border-4'
+            className='relative w-full h-72 rounded-2xl p-4 border-4'
             style={{ backgroundColor: hex, borderColor }}
         >
             <div
