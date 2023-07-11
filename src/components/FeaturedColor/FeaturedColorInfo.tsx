@@ -22,7 +22,7 @@ export default function FeaturedColorInfo({ data }: FeaturedColorInfoProps) {
         },
         {
             label: 'Hex',
-            value: `#${data.hex}`,
+            value: data.hex,
         },
         {
             label: 'RGB',
