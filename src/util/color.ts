@@ -1,7 +1,7 @@
 import { Color, differenceCiede2000, formatHex, hsl, hsv, nearest, rgb } from 'culori'
 import fs from 'fs'
 import path from 'path'
-import { addHash, formatHSL, formatHSV, formatRGB, removeHash } from './colorFormat'
+import { HSL, HSV, RGB, addHash, formatHSL, formatHSV, formatRGB, removeHash } from './colorFormat'
 import { getTodayDate } from './date'
 import { createCacheFile, getCacheFile } from './file'
 
@@ -106,9 +106,9 @@ export function getColorInfo(hex: string): ColorInfo {
 
     const related = nearestColors.slice(-10).map((color) => addHash(color))
 
-    const _rgb = formatRGB(rgb(hex))
-    const _hsv = formatHSV(hsv(hex), true) as [number, number, number]
-    const _hsl = formatHSL(hsl(hex), true) as [number, number, number]
+    const _rgb = formatRGB(rgb(hex) as RGB)
+    const _hsv = formatHSV(hsv(hex) as HSV, true) as [number, number, number]
+    const _hsl = formatHSL(hsl(hex) as HSL, true) as [number, number, number]
 
     const colorInfo: ColorInfo = {
         hex: hex.toLowerCase(),
