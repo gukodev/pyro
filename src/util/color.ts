@@ -35,6 +35,8 @@ export interface ColorInfo {
     nearestNamedColor: string
     shades: string[]
     tints: string[]
+    hues: string[]
+    relatedColors: string[]
     rgb: Rgb | undefined
     hsl: Hsl | undefined
     hsv: Hsv | undefined
@@ -101,9 +103,10 @@ export function getColorInfo(hex: string): ColorInfo {
 
     const rawColors = getColorNames()
     const colors = Object.keys(rawColors)
+    const getNearestColors = nearest(colors, differenceCiede2000())
 
-    const nearestNamedColor = nearest(colors, differenceCiede2000())
-    const cNearest = nearestNamedColor(hex, 1)[0]
+    const nearestColors = getNearestColors(hex, 10)
+    const cNearest = nearestColors[0]
 
     const colorInfo: ColorInfo = {
         hex: hex.toLowerCase(),
@@ -111,6 +114,8 @@ export function getColorInfo(hex: string): ColorInfo {
         nearestNamedColor: addHash(cNearest),
         shades: colorShades(hex),
         tints: colorTints(hex),
+        hues: colorHues(hex),
+        relatedColors: nearestColors.map((color) => addHash(color)),
         rgb: rgb(hex),
         hsl: hsl(hex),
         hsv: hsv(hex),
@@ -171,7 +176,7 @@ export function colorShades(color: string) {
     const V = HSV?.v || 0
     const toSubtract = V / length
 
-    for (let i = 0; i <= length; i++) {
+    for (let i = 0; i < length; i++) {
         const newHSV = { ...HSV, v: V - toSubtract * i }
         const newHex = formatHex(newHSV as Color)
         res.push(newHex)
@@ -190,7 +195,7 @@ export function colorTints(color: string) {
     const subtractS = S / length
     const addV = (1 - V) / length
 
-    for (let i = 0; i <= length; i++) {
+    for (let i = 0; i < length; i++) {
         const newHSV = { ...HSV, s: S - subtractS * i, v: V + addV * i }
         const newHex = formatHex(newHSV as Color)
         res.push(newHex)
@@ -207,7 +212,7 @@ export function colorHues(color: string) {
     const H = HSV?.h || 0
     const toAdd = 360 / length
 
-    for (let i = 0; i <= length; i++) {
+    for (let i = 0; i < length; i++) {
         const newHSV = { ...HSV, h: H + toAdd * i }
         const newHex = formatHex(newHSV as Color)
         res.push(newHex)
