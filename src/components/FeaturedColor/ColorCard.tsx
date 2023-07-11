@@ -16,7 +16,6 @@ export default function ColorCard({ data }: ColorCardProps) {
     const { hex, name, hsl } = data
     const theme = wcagContrast(hex, '#fff') > 3 ? 'light' : 'dark'
 
-    const lightness = hsl.l
     const borderColor = `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l - 3.33}%)`
 
     return (
