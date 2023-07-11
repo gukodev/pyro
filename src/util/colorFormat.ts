@@ -22,7 +22,7 @@ export function formatHSV(hsv: Hsv) {
 }
 
 export function removeHash(hex: string) {
-    if (hex.startsWith('#')) hex.slice(1)
+    if (hex.startsWith('#')) hex = hex.slice(1)
     return hex
 }
 
