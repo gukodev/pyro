@@ -1,4 +1,5 @@
 import Button from '@/components/Button'
+import ColorList from '@/components/ColorList'
 import ColorCard from '@/components/FeaturedColor/ColorCard'
 import FeaturedColorInfo from '@/components/FeaturedColor/FeaturedColorInfo'
 import Pallete from '@/components/Pallete'
@@ -38,6 +39,14 @@ export default async function Home() {
                     <div className='flex flex-col gap-2'>
                         <h1 className='text-2xl font-bold'>Tons claros</h1>
                         <Pallete colors={data.tints} linkColors />
+                    </div>
+                    <div className='flex flex-col gap-2'>
+                        <h1 className='text-2xl font-bold'>Hue</h1>
+                        <Pallete colors={data.hues} linkColors />
+                    </div>
+                    <div className='flex flex-col gap-2'>
+                        <h1 className='text-2xl font-bold'>Cores relacionadas</h1>
+                        <ColorList colors={data.related} />
                     </div>
                 </div>
             </div>
