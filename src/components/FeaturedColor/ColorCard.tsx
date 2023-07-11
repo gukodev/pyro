@@ -36,7 +36,9 @@ export default function ColorCard({ data }: ColorCardProps) {
             </div>
             <div className='absolute bottom-0 left-0 p-4 w-full'>
                 <div className='float-right opacity-90'>
-                    <OutlineButton theme={theme}>Saiba mais</OutlineButton>
+                    <Link href={`/${hex}`} passHref>
+                        <OutlineButton theme={theme}>Saiba mais</OutlineButton>
+                    </Link>
                 </div>
             </div>
         </div>
