@@ -1,32 +1,12 @@
-import {
-    Color,
-    Hsl,
-    Hsv,
-    Rgb,
-    differenceCiede2000,
-    formatHex,
-    hsl,
-    hsv,
-    nearest,
-    rgb,
-} from 'culori'
+import { Color, differenceCiede2000, formatHex, hsl, hsv, nearest, rgb } from 'culori'
 import fs from 'fs'
 import path from 'path'
-import { addHash, removeHash } from './colorFormat'
+import { addHash, formatHSL, formatHSV, formatRGB, removeHash } from './colorFormat'
 import { getTodayDate } from './date'
 import { createCacheFile, getCacheFile } from './file'
 
 export interface ColorNames {
     [hex: string]: string
-}
-
-export interface Cmyk {
-    mode: 'cmyk'
-    c: number
-    m: number
-    y: number
-    k: number
-    alpha?: number
 }
 
 export interface ColorInfo {
@@ -36,11 +16,28 @@ export interface ColorInfo {
     shades: string[]
     tints: string[]
     hues: string[]
-    relatedColors: string[]
-    rgb: Rgb | undefined
-    hsl: Hsl | undefined
-    hsv: Hsv | undefined
-    cmyk: Cmyk | undefined
+    related: string[]
+    rgb: {
+        r: number
+        g: number
+        b: number
+    }
+    hsl: {
+        h: number
+        s: number
+        l: number
+    }
+    hsv: {
+        h: number
+        s: number
+        v: number
+    }
+    cmyk: {
+        c: number
+        m: number
+        y: number
+        k: number
+    }
 }
 
 export const COLORNAMES_PATH = path.resolve('src/assets/data/colornames.min.json')
@@ -74,7 +71,7 @@ export function randomHexColor(length: number): string[] {
     return colors
 }
 
-export function getCmyk(hex: string): Cmyk {
+export function getCmyk(hex: string) {
     hex = removeHash(hex)
 
     const RGB = rgb(hex)
@@ -90,7 +87,6 @@ export function getCmyk(hex: string): Cmyk {
     const black = 1 - max
 
     return {
-        mode: 'cmyk',
         c: Math.round(cyan * 100),
         m: Math.round(magenta * 100),
         y: Math.round(yellow * 100),
@@ -105,8 +101,14 @@ export function getColorInfo(hex: string): ColorInfo {
     const colors = Object.keys(rawColors)
     const getNearestColors = nearest(colors, differenceCiede2000())
 
-    const nearestColors = getNearestColors(hex, 10)
+    const nearestColors = getNearestColors(hex, 1000)
     const cNearest = nearestColors[0]
+
+    const related = nearestColors.slice(-10).map((color) => addHash(color))
+
+    const _rgb = formatRGB(rgb(hex))
+    const _hsv = formatHSV(hsv(hex), true) as [number, number, number]
+    const _hsl = formatHSL(hsl(hex), true) as [number, number, number]
 
     const colorInfo: ColorInfo = {
         hex: hex.toLowerCase(),
@@ -115,10 +117,22 @@ export function getColorInfo(hex: string): ColorInfo {
         shades: colorShades(hex),
         tints: colorTints(hex),
         hues: colorHues(hex),
-        relatedColors: nearestColors.map((color) => addHash(color)),
-        rgb: rgb(hex),
-        hsl: hsl(hex),
-        hsv: hsv(hex),
+        related,
+        rgb: {
+            r: _rgb[0],
+            g: _rgb[1],
+            b: _rgb[2],
+        },
+        hsl: {
+            h: _hsl[0],
+            s: _hsl[1],
+            l: _hsl[2],
+        },
+        hsv: {
+            h: _hsv[0],
+            s: _hsv[1],
+            v: _hsv[2],
+        },
         cmyk: getCmyk(hex),
     }
 
