@@ -1,6 +1,7 @@
 'use client'
 
 import { ColorInfo } from '@/util/color'
+import { removeHash } from '@/util/colorFormat'
 import clsx from 'clsx'
 import { wcagContrast } from 'culori'
 import Link from 'next/link'
@@ -21,7 +22,7 @@ export default function ColorCard({ data }: ColorCardProps) {
     return (
         <div
             className='relative w-full h-72 rounded-3xl p-4 border-4'
-            style={{ backgroundColor: `#${hex}`, borderColor }}
+            style={{ backgroundColor: hex, borderColor }}
         >
             <div
                 className={clsx(
@@ -32,11 +33,11 @@ export default function ColorCard({ data }: ColorCardProps) {
                 <Link className='text-4xl hover:opacity-75 transition-opacity' href={`/${hex}`}>
                     {name}
                 </Link>
-                <Copyable value={`#${hex}`} />
+                <Copyable value={hex} />
             </div>
             <div className='absolute bottom-0 left-0 p-4 w-full'>
                 <div className='float-right opacity-90'>
-                    <Link href={`/${hex}`} passHref>
+                    <Link href={`/${removeHash(hex)}`} passHref>
                         <OutlineButton theme={theme}>Saiba mais</OutlineButton>
                     </Link>
                 </div>
