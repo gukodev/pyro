@@ -14,10 +14,10 @@ export default function Pallete({ colors, linkColors = false, size = 'md' }: Pal
     const commonStyles = (color: string, index: number, button?: boolean) => {
         return {
             className: clsx(
-                'w-full flex flex-1 transition-opacity',
+                'w-full flex flex-1 transition-all',
                 index === 0 ? 'rounded-l-2xl' : '',
                 index === colors.length - 1 ? 'rounded-r-2xl' : '',
-                button ? 'hover:opacity-75 group items-center justify-center' : ''
+                button ? 'hover:opacity-75 hover:p-2' : ''
             ),
             style: { backgroundColor: color, height: `${height}px` },
         }
