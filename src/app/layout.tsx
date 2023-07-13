@@ -6,6 +6,7 @@ const font = Alexandria({ subsets: ['latin'] })
 
 export const metadata = {
     title: 'pyro',
+    themeColor: '#ef4444',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
