@@ -23,20 +23,20 @@ export function formatRGB(rgb: RGB) {
     return [red, green, blue]
 }
 
-export function formatHSL(hsl: HSL, numbers?: boolean) {
-    const hue = Math.round(hsl.h)
-    const saturation = Math.round(hsl.s * 100)
-    const lightness = Math.round(hsl.l * 100)
-    if (numbers) return [hue, saturation, lightness]
-    return [hue + '°', saturation + '%', lightness + '%']
+function hslHsv(x: number, y: number, z: number, symbols = true, multiply = true) {
+    x = Math.round(x)
+    y = Math.round(y * (multiply ? 100 : 1))
+    z = Math.round(z * (multiply ? 100 : 1))
+    if (symbols) return [x + '°', y + '%', z + '%']
+    return [x, y, z]
 }
 
-export function formatHSV(hsv: HSV, numbers?: boolean) {
-    const hue = Math.round(hsv.h)
-    const saturation = Math.round(hsv.s * 100)
-    const value = Math.round(hsv.v * 100)
-    if (numbers) return [hue, saturation, value]
-    return [hue + '°', saturation + '%', value + '%']
+export function formatHSL(hsl: HSL, symbols: boolean = true, multiply: boolean = true) {
+    return hslHsv(hsl.h, hsl.s, hsl.l, symbols, multiply)
+}
+
+export function formatHSV(hsv: HSV, symbols: boolean = true, multiply: boolean = true) {
+    return hslHsv(hsv.h, hsv.s, hsv.v, symbols, multiply)
 }
 
 export function removeHash(hex: string) {

@@ -107,8 +107,8 @@ export function getColorInfo(hex: string): ColorInfo {
     const related = nearestColors.slice(-10).map((color) => addHash(color))
 
     const _rgb = formatRGB(rgb(hex) as RGB)
-    const _hsv = formatHSV(hsv(hex) as HSV, true) as [number, number, number]
-    const _hsl = formatHSL(hsl(hex) as HSL, true) as [number, number, number]
+    const _hsv = formatHSV(hsv(hex) as HSV, false) as [number, number, number]
+    const _hsl = formatHSL(hsl(hex) as HSL, false) as [number, number, number]
 
     const colorInfo: ColorInfo = {
         hex: hex.toLowerCase(),

@@ -29,11 +29,11 @@ export default function FeaturedColorInfo({ data }: FeaturedColorInfoProps) {
         },
         {
             label: 'HSL',
-            value: Object.values(formatHSL(data.hsl)).join(', '),
+            value: Object.values(formatHSL(data.hsl, true, false)).join(', '),
         },
         {
             label: 'HSV',
-            value: Object.values(formatHSV(data.hsv)).join(', '),
+            value: Object.values(formatHSV(data.hsv, true, false)).join(', '),
         },
     ]
 
