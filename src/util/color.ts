@@ -75,23 +75,16 @@ export function getCmyk(hex: string) {
     hex = removeHash(hex)
 
     const RGB = rgb(hex)
-    const red = RGB?.r || 255
-    const green = RGB?.g || 255
-    const blue = RGB?.b || 255
+    const r = RGB?.r || 1
+    const g = RGB?.g || 1
+    const b = RGB?.b || 1
 
-    const max = Math.max(red, green, blue)
+    const k = +(1 - Math.max(r, g, b)).toFixed(2)
+    const c = +((1 - r - k) / (1 - k) || 0).toFixed(2)
+    const m = +((1 - g - k) / (1 - k) || 0).toFixed(2)
+    const y = +((1 - b - k) / (1 - k) || 0).toFixed(2)
 
-    const cyan = (max - red) / max
-    const magenta = (max - green) / max
-    const yellow = (max - blue) / max
-    const black = 1 - max
-
-    return {
-        c: Math.round(cyan * 100),
-        m: Math.round(magenta * 100),
-        y: Math.round(yellow * 100),
-        k: Math.round(black * 100),
-    }
+    return { c, m, y, k }
 }
 
 export function getColorInfo(hex: string): ColorInfo {
