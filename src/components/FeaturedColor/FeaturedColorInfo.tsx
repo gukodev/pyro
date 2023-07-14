@@ -35,6 +35,10 @@ export default function FeaturedColorInfo({ data }: FeaturedColorInfoProps) {
             label: 'HSV',
             value: Object.values(formatHSV(data.hsv, true, false)).join(', '),
         },
+        {
+            label: 'CMYK',
+            value: Object.values(data.cmyk).join(', '),
+        },
     ]
 
     return (
