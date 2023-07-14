@@ -1,4 +1,4 @@
-import { Color, differenceCiede2000, formatHex, hsl, hsv, nearest, rgb } from 'culori'
+import { Color, Hsv, differenceCiede2000, formatHex, hsl, hsv, nearest, rgb } from 'culori'
 import fs from 'fs'
 import path from 'path'
 import { HSL, HSV, RGB, addHash, formatHSL, formatHSV, formatRGB, removeHash } from './colorFormat'
@@ -22,6 +22,7 @@ export interface ColorInfo {
     tints: string[]
     hues: string[]
     related: string[]
+    theory: ColorTheory
     rgb: {
         r: number
         g: number
@@ -43,6 +44,16 @@ export interface ColorInfo {
         y: number
         k: number
     }
+}
+
+export interface ColorTheory {
+    complementary: string[]
+    doubleComplementary: string[]
+    splitComplementary: string[]
+    analogous: string[]
+    triadic: string[]
+    tetradic: string[]
+    square: string[]
 }
 
 export const COLORNAMES_PATH = path.resolve('src/assets/data/colornames.min.json')
@@ -108,6 +119,7 @@ export function getColorInfo(hex: string): ColorInfo {
         tints: colorTints(hex),
         hues: colorHues(hex),
         related,
+        theory: colorTheory(hex),
         rgb: {
             r: _rgb[0],
             g: _rgb[1],
@@ -233,6 +245,94 @@ export function colorHues(color: string) {
     }
 
     return res
+}
+
+export function complementary(hsv: Hsv): string[] {
+    const H = hsv?.h || 0
+    const newHSV = { ...hsv, h: (H + 180) % 360 }
+    const orig = formatHex(hsv as Color)
+    return [orig, formatHex(newHSV as Color)]
+}
+
+export function doubleComplementary(hsv: Hsv): string[] {
+    const H = hsv?.h || 0
+    const newHSV1 = { ...hsv, h: (H + 150) % 360 }
+    const newHSV2 = { ...hsv, h: (H + 210) % 360 }
+    const color = formatHex(hsv as Color)
+    return [color, formatHex(newHSV1 as Color), formatHex(newHSV2 as Color)]
+}
+
+export function splitComplementary(hsv: Hsv): string[] {
+    const H = hsv?.h || 0
+    const newHSV1 = { ...hsv, h: (H + 150) % 360 }
+    const newHSV2 = { ...hsv, h: (H + 210) % 360 }
+    const color = formatHex(hsv as Color)
+    return [color, formatHex(newHSV1 as Color), formatHex(newHSV2 as Color)]
+}
+
+export function analogous(hsv: Hsv): string[] {
+    const H = hsv?.h || 0
+    const newHSV1 = { ...hsv, h: (H + 30) % 360 }
+    const newHSV2 = { ...hsv, h: (H + 330) % 360 }
+    const color = formatHex(hsv as Color)
+    return [color, formatHex(newHSV1 as Color), formatHex(newHSV2 as Color)]
+}
+
+export function triadic(hsv: Hsv): string[] {
+    const H = hsv?.h || 0
+    const newHSV1 = { ...hsv, h: (H + 120) % 360 }
+    const newHSV2 = { ...hsv, h: (H + 240) % 360 }
+    const color = formatHex(hsv as Color)
+    return [color, formatHex(newHSV1 as Color), formatHex(newHSV2 as Color)]
+}
+
+export function tetradic(hsv: Hsv): string[] {
+    const H = hsv?.h || 0
+    const newHSV1 = { ...hsv, h: (H + 60) % 360 }
+    const newHSV2 = { ...hsv, h: (H + 180) % 360 }
+    const newHSV3 = { ...hsv, h: (H + 240) % 360 }
+    const color = formatHex(hsv as Color)
+    return [
+        color,
+        formatHex(newHSV1 as Color),
+        formatHex(newHSV2 as Color),
+        formatHex(newHSV3 as Color),
+    ]
+}
+
+export function square(hsv: Hsv): string[] {
+    const H = hsv?.h || 0
+    const newHSV1 = { ...hsv, h: (H + 90) % 360 }
+    const newHSV2 = { ...hsv, h: (H + 180) % 360 }
+    const newHSV3 = { ...hsv, h: (H + 270) % 360 }
+    const color = formatHex(hsv as Color)
+    return [
+        color,
+        formatHex(newHSV1 as Color),
+        formatHex(newHSV2 as Color),
+        formatHex(newHSV3 as Color),
+    ]
+}
+
+export function colorTheory(color: string): ColorTheory {
+    const _hsv = hsv(color) as Hsv
+    const comp = complementary(_hsv)
+    const doubleComp = doubleComplementary(_hsv)
+    const splitComp = splitComplementary(_hsv)
+    const analog = analogous(_hsv)
+    const triad = triadic(_hsv)
+    const tetra = tetradic(_hsv)
+    const sqr = square(_hsv)
+
+    return {
+        complementary: comp,
+        doubleComplementary: doubleComp,
+        splitComplementary: splitComp,
+        analogous: analog,
+        triadic: triad,
+        tetradic: tetra,
+        square: sqr,
+    }
 }
 
 // function test(type: 'hue' | 'shade' | 'tint', color: string) {

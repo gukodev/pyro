@@ -1,5 +1,6 @@
 import Button from '@/components/Button'
 import ColorList from '@/components/ColorList'
+import ColorTheory from '@/components/ColorTheory'
 import ColorCard from '@/components/FeaturedColor/ColorCard'
 import FeaturedColorInfo from '@/components/FeaturedColor/FeaturedColorInfo'
 import Pallete from '@/components/Pallete'
@@ -8,6 +9,12 @@ import { removeHash } from '@/util/colorFormat'
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { Palette, Shuffle } from './../assets/icons'
+
+interface Items {
+    id?: string
+    label?: string
+    component: React.ReactNode
+}
 
 let data: ColorInfo | null = null
 
@@ -31,6 +38,29 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function Home() {
     data = await getRandomColor()
+
+    const items: Items[] = [
+        {
+            label: 'Tons escuros',
+            component: <Pallete colors={data.shades} linkColors />,
+        },
+        {
+            label: 'Tons claros',
+            component: <Pallete colors={data.tints} linkColors />,
+        },
+        {
+            label: 'Hue',
+            component: <Pallete colors={data.hues} linkColors />,
+        },
+        {
+            id: 'theory',
+            component: <ColorTheory colors={data.theory} />,
+        },
+        {
+            label: 'Cores relacionadas',
+            component: <ColorList colors={data.related} />,
+        },
+    ]
 
     return (
         <main className='mb-48'>
@@ -57,22 +87,12 @@ export default async function Home() {
                     </div>
                     <ColorCard data={data} />
                     <FeaturedColorInfo data={data} />
-                    <div className='flex flex-col gap-2'>
-                        <h1 className='text-2xl font-bold'>Tons escuros</h1>
-                        <Pallete colors={data.shades} linkColors />
-                    </div>
-                    <div className='flex flex-col gap-2'>
-                        <h1 className='text-2xl font-bold'>Tons claros</h1>
-                        <Pallete colors={data.tints} linkColors />
-                    </div>
-                    <div className='flex flex-col gap-2'>
-                        <h1 className='text-2xl font-bold'>Hue</h1>
-                        <Pallete colors={data.hues} linkColors />
-                    </div>
-                    <div className='flex flex-col gap-2'>
-                        <h1 className='text-2xl font-bold'>Cores relacionadas</h1>
-                        <ColorList colors={data.related} />
-                    </div>
+                    {items.map((x) => (
+                        <div className='flex flex-col gap-2' key={x.id || x.label}>
+                            {x.label && <h1 className='text-2xl font-bold'>{x.label}</h1>}
+                            {x.component}
+                        </div>
+                    ))}
                 </div>
             </div>
         </main>
