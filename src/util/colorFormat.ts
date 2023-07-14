@@ -23,6 +23,10 @@ export function formatRGB(rgb: RGB) {
     return [red, green, blue]
 }
 
+export function sanitizeColor(color: string) {
+    return color.replace(/[^a-f0-9]/gi, '')
+}
+
 function hslHsv(x: number, y: number, z: number, symbols = true, multiply = true) {
     x = Math.round(x)
     y = Math.round(y * (multiply ? 100 : 1))
