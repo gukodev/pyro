@@ -5,6 +5,11 @@ import { HSL, HSV, RGB, addHash, formatHSL, formatHSV, formatRGB, removeHash } f
 import { getTodayDate } from './date'
 import { createCacheFile, getCacheFile } from './file'
 
+interface CachedFile {
+    info: ColorInfo
+    generatedAt: string
+}
+
 export interface ColorNames {
     [hex: string]: string
 }
@@ -54,6 +59,14 @@ export function getColorNames(): ColorNames {
     return colorNames
 }
 
+// Generates a random named color
+export function getRandomColor(): ColorInfo {
+    const colorNames = Object.entries(getColorNames())
+    const rndIndex = Math.floor(Math.random() * colorNames.length)
+    const [hex] = colorNames[rndIndex]
+    return getColorInfo(hex)
+}
+
 // Generates a random color by generating a random hex value
 export function randomHexColor(length: number): string[] {
     function generateRandomHexColor(): string {
@@ -69,22 +82,6 @@ export function randomHexColor(length: number): string[] {
     }
 
     return colors
-}
-
-export function getCmyk(hex: string) {
-    hex = removeHash(hex)
-
-    const RGB = rgb(hex)
-    const r = RGB?.r || 1
-    const g = RGB?.g || 1
-    const b = RGB?.b || 1
-
-    const k = +(1 - Math.max(r, g, b)).toFixed(2)
-    const c = +((1 - r - k) / (1 - k) || 0).toFixed(2)
-    const m = +((1 - g - k) / (1 - k) || 0).toFixed(2)
-    const y = +((1 - b - k) / (1 - k) || 0).toFixed(2)
-
-    return { c, m, y, k }
 }
 
 export function getColorInfo(hex: string): ColorInfo {
@@ -132,11 +129,24 @@ export function getColorInfo(hex: string): ColorInfo {
     return colorInfo
 }
 
-interface CachedFile {
-    info: ColorInfo
-    generatedAt: string
+// Converts a hex color to CMYK
+export function getCmyk(hex: string) {
+    hex = removeHash(hex)
+
+    const RGB = rgb(hex)
+    const r = RGB?.r || 1
+    const g = RGB?.g || 1
+    const b = RGB?.b || 1
+
+    const k = +(1 - Math.max(r, g, b)).toFixed(2)
+    const c = +((1 - r - k) / (1 - k) || 0).toFixed(2)
+    const m = +((1 - g - k) / (1 - k) || 0).toFixed(2)
+    const y = +((1 - b - k) / (1 - k) || 0).toFixed(2)
+
+    return { c, m, y, k }
 }
 
+// Generates a random named color and caches it for the day
 export function getDailyColor(): ColorInfo {
     const date = getTodayDate()
     const unixTs = Math.floor(date.getTime() / 1000)
@@ -167,14 +177,8 @@ export function getDailyColor(): ColorInfo {
     return data.info
 }
 
-// Generates a random named color
-export function getRandomColor(): ColorInfo {
-    const colorNames = Object.entries(getColorNames())
-    const rndIndex = Math.floor(Math.random() * colorNames.length)
-    const [hex] = colorNames[rndIndex]
-    return getColorInfo(hex)
-}
-
+// Generates 10 hues of a color
+// Shade => mix with black
 export function colorShades(color: string) {
     const length = 10
     const HSV = hsv(color)
@@ -192,6 +196,8 @@ export function colorShades(color: string) {
     return res
 }
 
+// Generates 10 tints of a color
+// Tint => mix with white
 export function colorTints(color: string) {
     const length = 10
     const HSV = hsv(color)
@@ -211,6 +217,7 @@ export function colorTints(color: string) {
     return res
 }
 
+// Generates 10 hues of a color
 export function colorHues(color: string) {
     const length = 10
     const HSV = hsv(color)
