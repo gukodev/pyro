@@ -48,12 +48,10 @@ export interface ColorInfo {
 
 export interface ColorTheory {
     complementary: string[]
-    doubleComplementary: string[]
     splitComplementary: string[]
     analogous: string[]
     triadic: string[]
     tetradic: string[]
-    square: string[]
 }
 
 export const COLORNAMES_PATH = path.resolve('src/assets/data/colornames.min.json')
@@ -254,14 +252,6 @@ export function complementary(hsv: Hsv): string[] {
     return [orig, formatHex(newHSV as Color)]
 }
 
-export function doubleComplementary(hsv: Hsv): string[] {
-    const H = hsv?.h || 0
-    const newHSV1 = { ...hsv, h: (H + 150) % 360 }
-    const newHSV2 = { ...hsv, h: (H + 210) % 360 }
-    const color = formatHex(hsv as Color)
-    return [color, formatHex(newHSV1 as Color), formatHex(newHSV2 as Color)]
-}
-
 export function splitComplementary(hsv: Hsv): string[] {
     const H = hsv?.h || 0
     const newHSV1 = { ...hsv, h: (H + 150) % 360 }
@@ -300,38 +290,20 @@ export function tetradic(hsv: Hsv): string[] {
     ]
 }
 
-export function square(hsv: Hsv): string[] {
-    const H = hsv?.h || 0
-    const newHSV1 = { ...hsv, h: (H + 90) % 360 }
-    const newHSV2 = { ...hsv, h: (H + 180) % 360 }
-    const newHSV3 = { ...hsv, h: (H + 270) % 360 }
-    const color = formatHex(hsv as Color)
-    return [
-        color,
-        formatHex(newHSV1 as Color),
-        formatHex(newHSV2 as Color),
-        formatHex(newHSV3 as Color),
-    ]
-}
-
 export function colorTheory(color: string): ColorTheory {
     const _hsv = hsv(color) as Hsv
     const comp = complementary(_hsv)
-    const doubleComp = doubleComplementary(_hsv)
     const splitComp = splitComplementary(_hsv)
     const analog = analogous(_hsv)
     const triad = triadic(_hsv)
     const tetra = tetradic(_hsv)
-    const sqr = square(_hsv)
 
     return {
         complementary: comp,
-        doubleComplementary: doubleComp,
         splitComplementary: splitComp,
         analogous: analog,
         triadic: triad,
         tetradic: tetra,
-        square: sqr,
     }
 }
 
