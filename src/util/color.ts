@@ -14,6 +14,11 @@ export interface ColorNames {
     [hex: string]: string
 }
 
+export interface DarkColor {
+    hex: string
+    name: string
+}
+
 export interface ColorInfo {
     hex: string
     name: string
@@ -60,9 +65,27 @@ export interface ColorTheory {
 }
 
 export const COLORNAMES_PATH = path.resolve('src/assets/data/colornames.min.json')
+export const DARKCOLORS_PATH = path.resolve('src/assets/data/dark-colors.json')
 
 // Memory cache
 let colorNames: ColorNames | null = null
+let darkColors: DarkColor[] | null = null
+
+export function getDarkColors(): DarkColor[] {
+    if (!darkColors) {
+        const data = JSON.parse(fs.readFileSync(DARKCOLORS_PATH, 'utf-8'))
+        darkColors = data
+        return data
+    }
+    return darkColors
+}
+
+export function getRandomDarkColor(): DarkColor {
+    const darkColors = getDarkColors()
+    const rndIndex = Math.floor(Math.random() * darkColors.length)
+    const color = darkColors[rndIndex]
+    return color
+}
 
 export function getColorNames(): ColorNames {
     if (!colorNames) {
@@ -71,6 +94,12 @@ export function getColorNames(): ColorNames {
         return data
     }
     return colorNames
+}
+
+export function getColorName(hex: string): string {
+    const colorNames = getColorNames()
+    const name = colorNames[hex]
+    return name
 }
 
 export function getRandomNamedColorHex(): string {
@@ -333,6 +362,41 @@ export function colorTheory(color: string): ColorTheory {
         tetradic: tetra,
     }
 }
+
+// function getDarkColors(length: number = 1000) {
+//     let colors = []
+//     let times = []
+//     let average = 0
+//     let finish = 0
+
+//     while (colors.length !== length) {
+//         const start = Date.now()
+//         const hex = getRandomNamedColorHex()
+//         if (wcagContrast(hex, '#fff') > 3) {
+//             const info = getColorInfo(hex)
+//             colors.push({
+//                 hex: info.hex,
+//                 name: info.name,
+//             })
+//             const end = Date.now()
+//             const time = end - start
+//             times.push(time)
+
+//             average = Math.round(times.reduce((a, b) => a + b, 0) / times.length)
+//             finish = Math.round((length - colors.length) * average)
+
+//             console.log(
+//                 `${colors.length} / ${length} - ${time}ms - avg ${average}ms - ${finish}ms remaining`
+//             )
+//         }
+//     }
+
+//     // write to file
+//     fs.writeFileSync(
+//         path.join(__dirname, '../assets/data/dark-colors.json'),
+//         JSON.stringify(colors)
+//     )
+// }
 
 // function test(type: 'hue' | 'shade' | 'tint', color: string) {
 //     const colors =
