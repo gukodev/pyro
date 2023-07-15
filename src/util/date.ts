@@ -1,24 +1,24 @@
-interface Times {
-    start: number
-}
+// interface Times {
+//     start: number
+// }
 
-const times = new Map<string, Times>()
+// const times = new Map<string, Times>()
 
-export function initExecTime(name: string) {
-    times.set(name, {
-        start: Date.now(),
-    })
-}
+// export function initExecTime(name: string) {
+//     times.set(name, {
+//         start: Date.now(),
+//     })
+// }
 
-export function getExecTime(name: string) {
-    const startTime = times.get(name)?.start
-    if (startTime === undefined) return 0
+// export function getExecTime(name: string) {
+//     const startTime = times.get(name)?.start
+//     if (startTime === undefined) return 0
 
-    const endTime = Date.now()
-    times.delete(name)
+//     const endTime = Date.now()
+//     times.delete(name)
 
-    return endTime - startTime
-}
+//     return endTime - startTime
+// }
 
 export function getTodayDate() {
     const date = new Date()
