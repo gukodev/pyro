@@ -81,8 +81,8 @@ export default async function Home() {
                     </div>
                 </div>
                 <div className='flex flex-col gap-8'>
-                    <div className='flex items-center gap-4'>
-                        <h1 className='text-6xl font-bold'>Cor destaque</h1>
+                    <div className='flex items-center gap-4 justify-between md:justify-normal'>
+                        <h1 className='text-4xl md:text-6xl font-bold'>Cor destaque</h1>
                         <p className='text-slate-400'>reseta em 2 horas</p>
                     </div>
                     <ColorCard data={data} />

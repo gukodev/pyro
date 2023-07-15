@@ -14,7 +14,7 @@ function getLabel(label: Labels) {
 
 export default function ColorTheory({ colors }: ColorTheoryProps) {
     return (
-        <div className='grid grid-cols-2 gap-8'>
+        <div className='grid gap-8 grid-cols-1 md:grid-cols-2'>
             {Object.entries(colors).map((x) => (
                 <div className='flex flex-col gap-2' key={x[0]}>
                     <h1 className='text-2xl font-bold'>{getLabel(x[0] as Labels)}</h1>
