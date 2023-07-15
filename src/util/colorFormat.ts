@@ -48,6 +48,10 @@ export function removeHash(hex: string) {
     return hex
 }
 
+export function formatCMYK(cmyk: { c: number; m: number; y: number; k: number }) {
+    return [cmyk.c + '%', cmyk.m + '%', cmyk.y + '%', cmyk.k + '%']
+}
+
 export function addHash(hex: string) {
     if (!hex.startsWith('#')) hex = '#' + hex
     return hex

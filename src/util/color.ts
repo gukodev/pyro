@@ -1,7 +1,7 @@
 import { Color, Hsv, differenceCiede2000, formatHex, hsl, hsv, nearest, rgb } from 'culori'
 import fs from 'fs'
 import path from 'path'
-import { HSL, HSV, RGB, addHash, formatHSL, formatHSV, formatRGB, removeHash } from './colorFormat'
+import { HSL, HSV, RGB, addHash, formatHSL, formatHSV, formatRGB } from './colorFormat'
 import { getTodayDate } from './date'
 import { createCacheFile, getCacheFile } from './file'
 
@@ -141,19 +141,24 @@ export function getColorInfo(hex: string): ColorInfo {
 
 // Converts a hex color to CMYK
 export function getCmyk(hex: string) {
-    hex = removeHash(hex)
-
     const RGB = rgb(hex)
-    const r = RGB?.r || 1
-    const g = RGB?.g || 1
-    const b = RGB?.b || 1
+    const r = Math.round((RGB?.r || 0) * 255)
+    const g = Math.round((RGB?.g || 0) * 255)
+    const b = Math.round((RGB?.b || 0) * 255)
 
-    const k = +(1 - Math.max(r, g, b)).toFixed(2)
-    const c = +((1 - r - k) / (1 - k) || 0).toFixed(2)
-    const m = +((1 - g - k) / (1 - k) || 0).toFixed(2)
-    const y = +((1 - b - k) / (1 - k) || 0).toFixed(2)
+    const c = 1 - r / 255
+    const m = 1 - g / 255
+    const y = 1 - b / 255
 
-    return { c, m, y, k }
+    const k = Math.min(c, m, y)
+    const cmyk = {
+        c: Math.round(((c - k) / (1 - k)) * 100),
+        m: Math.round(((m - k) / (1 - k)) * 100),
+        y: Math.round(((y - k) / (1 - k)) * 100),
+        k: Math.round(k * 100),
+    }
+
+    return { ...cmyk }
 }
 
 // Generates a random named color and caches it for the day

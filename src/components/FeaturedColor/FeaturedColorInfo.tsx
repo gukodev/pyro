@@ -1,7 +1,7 @@
 'use client'
 
 import { ColorInfo } from '@/util/color'
-import { formatHSL, formatHSV } from '@/util/colorFormat'
+import { formatCMYK, formatHSL, formatHSV } from '@/util/colorFormat'
 import Copyable from '../Copyable'
 
 interface FeaturedColorInfoProps {
@@ -37,7 +37,7 @@ export default function FeaturedColorInfo({ data }: FeaturedColorInfoProps) {
         },
         {
             label: 'CMYK',
-            value: Object.values(data.cmyk).join(', '),
+            value: Object.values(formatCMYK(data.cmyk)).join(', '),
         },
     ]
 
