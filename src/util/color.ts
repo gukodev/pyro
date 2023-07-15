@@ -163,10 +163,10 @@ export function getCmyk(hex: string) {
 
     const k = Math.min(c, m, y)
     const cmyk = {
-        c: Math.round(((c - k) / (1 - k)) * 100),
-        m: Math.round(((m - k) / (1 - k)) * 100),
-        y: Math.round(((y - k) / (1 - k)) * 100),
-        k: Math.round(k * 100),
+        c: Math.round(((c - k) / (1 - k)) * 100) || 0,
+        m: Math.round(((m - k) / (1 - k)) * 100) || 0,
+        y: Math.round(((y - k) / (1 - k)) * 100) || 0,
+        k: Math.round(k * 100) || 0,
     }
 
     return { ...cmyk }
