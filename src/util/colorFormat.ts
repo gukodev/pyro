@@ -27,6 +27,11 @@ export function sanitizeColor(color: string) {
     return color.replace(/[^a-f0-9]/gi, '')
 }
 
+export function isValidColor(color: string) {
+    const rgx = /^#?([0-9A-Fa-f]{3}){1,2}$/
+    return rgx.test(color)
+}
+
 function hslHsv(x: number, y: number, z: number, symbols = true, multiply = true) {
     x = Math.round(x)
     y = Math.round(y * (multiply ? 100 : 1))

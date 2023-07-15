@@ -5,8 +5,9 @@ import ColorTheory from '@/components/ColorTheory'
 import NavBar from '@/components/NavBar'
 import Pallete from '@/components/Pallete'
 import { ColorInfo, getColorInfo } from '@/util/color'
-import { removeHash } from '@/util/colorFormat'
+import { isValidColor, removeHash } from '@/util/colorFormat'
 import { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import { Item } from '../page'
 
 interface ColorPageProps {
@@ -36,8 +37,11 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function ColorPage({ params }: ColorPageProps) {
-    const color = params.color as string
-    data = await getColorInfo(color as string)
+    const { color } = params
+
+    if (!isValidColor(color)) return notFound()
+
+    data = await getColorInfo(color)
 
     const items: Item[] = [
         {
