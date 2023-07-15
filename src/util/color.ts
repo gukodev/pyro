@@ -100,10 +100,10 @@ export function getColorInfo(hex: string): ColorInfo {
     const colors = Object.keys(rawColors)
     const getNearestColors = nearest(colors, differenceCiede2000())
 
-    const nearestColors = getNearestColors(hex, 1000)
+    const nearestColors = getNearestColors(hex, 500)
     const cNearest = nearestColors[0]
 
-    const related = nearestColors.slice(-10).map((color) => addHash(color))
+    const related = nearestColors.slice(-20).map((color) => addHash(color))
 
     const _rgb = formatRGB(rgb(hex) as RGB)
     const _hsv = formatHSV(hsv(hex) as HSV, false) as [number, number, number]
