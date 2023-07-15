@@ -5,9 +5,9 @@ import ColorTheory from '@/components/ColorTheory'
 import NavBar from '@/components/NavBar'
 import Pallete from '@/components/Pallete'
 import { ColorInfo, getColorInfo } from '@/util/color'
-import { isValidColor, removeHash } from '@/util/colorFormat'
+import { getFullLengthHex, isValidColor, removeHash } from '@/util/colorFormat'
 import { Metadata } from 'next'
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import { Item } from '../page'
 
 interface ColorPageProps {
@@ -40,6 +40,7 @@ export default async function ColorPage({ params }: ColorPageProps) {
     const { color } = params
 
     if (!isValidColor(color)) return notFound()
+    if (removeHash(color).length === 3) return redirect(`/${getFullLengthHex(color)}`)
 
     data = await getColorInfo(color)
 

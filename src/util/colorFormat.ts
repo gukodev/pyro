@@ -32,6 +32,16 @@ export function isValidColor(color: string) {
     return rgx.test(color)
 }
 
+export function getFullLengthHex(hex: string) {
+    if (hex.length === 3) {
+        hex = hex
+            .split('')
+            .map((char) => char + char)
+            .join('')
+    }
+    return hex
+}
+
 function hslHsv(x: number, y: number, z: number, symbols = true, multiply = true) {
     x = Math.round(x)
     y = Math.round(y * (multiply ? 100 : 1))
