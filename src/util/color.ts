@@ -73,20 +73,31 @@ export function getColorNames(): ColorNames {
     return colorNames
 }
 
-// Generates a random named color
-export function getRandomColor(): ColorInfo {
+export function getRandomNamedColorHex(): string {
+    const colorNames = Object.keys(getColorNames())
+    const rndIndex = Math.floor(Math.random() * colorNames.length)
+    const hex = colorNames[rndIndex]
+    return hex
+}
+
+// Generates a random named color and return its info
+export function getRandomNamedColor(): ColorInfo {
     const colorNames = Object.entries(getColorNames())
     const rndIndex = Math.floor(Math.random() * colorNames.length)
     const [hex] = colorNames[rndIndex]
     return getColorInfo(hex)
 }
 
-// Generates a random color by generating a random hex value
-export function randomHexColor(length: number): string[] {
+// Generates a random hex color value
+export function getRandomColor(length?: number): string[] | string {
     function generateRandomHexColor(): string {
         const randomColor = Math.floor(Math.random() * 16777215).toString(16)
         const paddedColor = randomColor.padStart(6, '0')
         return `#${paddedColor}`
+    }
+
+    if (!length) {
+        return generateRandomHexColor()
     }
 
     const colors: string[] = []

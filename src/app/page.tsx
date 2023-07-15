@@ -4,7 +4,7 @@ import ColorList from '@/components/ColorList'
 import ColorTheory from '@/components/ColorTheory'
 import NavBar from '@/components/NavBar'
 import Pallete from '@/components/Pallete'
-import { ColorInfo, getRandomColor } from '@/util/color'
+import { ColorInfo, getRandomNamedColor } from '@/util/color'
 import { removeHash } from '@/util/colorFormat'
 import { Metadata } from 'next'
 
@@ -35,7 +35,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Home() {
-    data = await getRandomColor()
+    data = await getRandomNamedColor()
 
     const items: Item[] = [
         {

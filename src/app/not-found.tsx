@@ -1,11 +1,11 @@
 import Button from '@/components/Button'
 import ColorLink from '@/components/ColorLink'
 import NavBar from '@/components/NavBar'
-import { getRandomColor } from '@/util/color'
+import { getRandomNamedColor } from '@/util/color'
 import Link from 'next/link'
 
 export default function Page404() {
-    const rndColor = getRandomColor()
+    const rndColor = getRandomNamedColor()
 
     return (
         <main className='mb-48'>
