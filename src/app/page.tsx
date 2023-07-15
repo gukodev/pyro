@@ -4,8 +4,12 @@ import ColorList from '@/components/ColorList'
 import ColorTheory from '@/components/ColorTheory'
 import NavBar from '@/components/NavBar'
 import Pallete from '@/components/Pallete'
-import { ColorInfo, getRandomNamedColor } from '@/util/color'
+import ResetTimer from '@/components/ResetTimer'
+import { ColorInfo, getDailyColor } from '@/util/color'
 import { removeHash } from '@/util/colorFormat'
+import dayjs from 'dayjs'
+import 'dayjs/locale/pt-br'
+import relativeTime from 'dayjs/plugin/relativeTime'
 import { Metadata } from 'next'
 
 export interface Item {
@@ -35,7 +39,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Home() {
-    data = await getRandomNamedColor()
+    data = await getDailyColor()
 
     const items: Item[] = [
         {
@@ -60,6 +64,15 @@ export default async function Home() {
         },
     ]
 
+    dayjs.locale('pt-br')
+    dayjs.extend(relativeTime)
+
+    const getRemainingTime = () => {
+        const now = new Date()
+        const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0)
+        return dayjs(tomorrow).fromNow(true)
+    }
+
     return (
         <main className='mb-48'>
             <div className='w-full max-w-screen-lg mx-auto px-4'>
@@ -67,7 +80,7 @@ export default async function Home() {
                 <div className='flex flex-col gap-8'>
                     <div className='flex items-center gap-4 justify-between md:justify-normal'>
                         <h1 className='text-4xl md:text-6xl font-bold'>Cor destaque</h1>
-                        <p className='text-slate-400'>reseta em 2 horas</p>
+                        <ResetTimer remaining={getRemainingTime()} />
                     </div>
                     <ColorCard data={data} />
                     <ColorDetails data={data} />
