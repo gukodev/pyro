@@ -23,6 +23,11 @@ export interface ColorInfo {
     hues: string[]
     related: string[]
     theory: ColorTheory
+    percent: {
+        r: number
+        g: number
+        b: number
+    }
     rgb: {
         r: number
         g: number
@@ -105,7 +110,8 @@ export function getColorInfo(hex: string): ColorInfo {
 
     const related = nearestColors.slice(-20).map((color) => addHash(color))
 
-    const _rgb = formatRGB(rgb(hex) as RGB)
+    const _rgb = rgb(hex) as RGB
+    const rgbFormatted = formatRGB(_rgb)
     const _hsv = formatHSV(hsv(hex) as HSV, false) as [number, number, number]
     const _hsl = formatHSL(hsl(hex) as HSL, false) as [number, number, number]
 
@@ -118,10 +124,15 @@ export function getColorInfo(hex: string): ColorInfo {
         hues: colorHues(hex),
         related,
         theory: colorTheory(hex),
+        percent: {
+            r: Math.round((_rgb?.r || 0) * 100),
+            g: Math.round((_rgb?.g || 0) * 100),
+            b: Math.round((_rgb?.b || 0) * 100),
+        },
         rgb: {
-            r: _rgb[0],
-            g: _rgb[1],
-            b: _rgb[2],
+            r: rgbFormatted[0],
+            g: rgbFormatted[1],
+            b: rgbFormatted[2],
         },
         hsl: {
             h: _hsl[0],

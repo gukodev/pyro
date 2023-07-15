@@ -16,6 +16,10 @@ export default function ColorCard({ data }: ColorCardProps) {
     const borderColor = `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l - 3.33}%)`
     const textColor = theme === 'dark' ? 'text-black/90' : 'text-white/90'
 
+    const { r, g, b } = data.percent
+    const predominant =
+        r > g && r > b ? 'vermelha' : g > r && g > b ? 'verde' : b > r && b > g ? 'azul' : null
+
     return (
         <div
             className='relative w-full h-72 rounded-2xl p-4 border-4'
@@ -38,7 +42,10 @@ export default function ColorCard({ data }: ColorCardProps) {
                     textColor
                 )}
             >
-                <p>{data.name} [...]</p>
+                <p>
+                    {data.name} é composta por {r}% de vermelho, {g}% de verde e {b}% de azul.{' '}
+                    {predominant ? `Contém majoritariamente a cor ${predominant}.` : null}
+                </p>
             </div>
         </div>
     )
