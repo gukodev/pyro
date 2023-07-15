@@ -35,12 +35,12 @@ function hslHsv(x: number, y: number, z: number, symbols = true, multiply = true
     return [x, y, z]
 }
 
-export function formatHSL(hsl: HSL, symbols: boolean = true, multiply: boolean = true) {
-    return hslHsv(hsl.h, hsl.s, hsl.l, symbols, multiply)
+export function formatHSL(hsl: HSL | undefined, symbols: boolean = true, multiply: boolean = true) {
+    return hslHsv(hsl?.h || 0, hsl?.s || 0, hsl?.l || 0, symbols, multiply)
 }
 
-export function formatHSV(hsv: HSV, symbols: boolean = true, multiply: boolean = true) {
-    return hslHsv(hsv.h, hsv.s, hsv.v, symbols, multiply)
+export function formatHSV(hsv: HSV | undefined, symbols: boolean = true, multiply: boolean = true) {
+    return hslHsv(hsv?.h || 0, hsv?.s || 0, hsv?.v || 0, symbols, multiply)
 }
 
 export function removeHash(hex: string) {
