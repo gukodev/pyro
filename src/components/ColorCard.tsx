@@ -1,6 +1,7 @@
 'use client'
 
 import { ColorInfo } from '@/util/color'
+import { removeHash } from '@/util/colorFormat'
 import clsx from 'clsx'
 import { wcagContrast } from 'culori'
 import Link from 'next/link'
@@ -31,7 +32,10 @@ export default function ColorCard({ data }: ColorCardProps) {
                     textColor
                 )}
             >
-                <Link className='text-4xl hover:opacity-75 transition-opacity' href={`/${hex}`}>
+                <Link
+                    className='text-4xl hover:opacity-75 transition-opacity'
+                    href={`/${removeHash(hex)}`}
+                >
                     {name}
                 </Link>
                 <Copyable value={hex} />
