@@ -1,8 +1,8 @@
 import Button from '@/components/Button'
+import ColorCard from '@/components/ColorCard'
+import ColorDetails from '@/components/ColorDetails'
 import ColorList from '@/components/ColorList'
 import ColorTheory from '@/components/ColorTheory'
-import ColorCard from '@/components/FeaturedColor/ColorCard'
-import FeaturedColorInfo from '@/components/FeaturedColor/FeaturedColorInfo'
 import Pallete from '@/components/Pallete'
 import { ColorInfo, getRandomColor } from '@/util/color'
 import { removeHash } from '@/util/colorFormat'
@@ -86,7 +86,7 @@ export default async function Home() {
                         <p className='text-slate-400'>reseta em 2 horas</p>
                     </div>
                     <ColorCard data={data} />
-                    <FeaturedColorInfo data={data} />
+                    <ColorDetails data={data} />
                     {items.map((x) => (
                         <div className='flex flex-col gap-2' key={x.id || x.label}>
                             {x.label && <h1 className='text-2xl font-bold'>{x.label}</h1>}

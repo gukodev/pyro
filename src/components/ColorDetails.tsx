@@ -1,10 +1,10 @@
 'use client'
 
+import Copyable from '@/components/Copyable'
 import { ColorInfo } from '@/util/color'
 import { formatCMYK, formatHSL, formatHSV } from '@/util/colorFormat'
-import Copyable from '../Copyable'
 
-interface FeaturedColorInfoProps {
+interface ColorDetailsProps {
     data: ColorInfo
 }
 
@@ -13,7 +13,7 @@ interface InfoItem {
     value: string
 }
 
-export default function FeaturedColorInfo({ data }: FeaturedColorInfoProps) {
+export default function ColorDetails({ data }: ColorDetailsProps) {
     const info: InfoItem[] = [
         {
             label: 'Nome',

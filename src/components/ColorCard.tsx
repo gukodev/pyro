@@ -1,12 +1,10 @@
 'use client'
 
 import { ColorInfo } from '@/util/color'
-import { removeHash } from '@/util/colorFormat'
 import clsx from 'clsx'
 import { wcagContrast } from 'culori'
 import Link from 'next/link'
-import Copyable from '../Copyable'
-import OutlineButton from '../OutlineButton'
+import Copyable from './Copyable'
 
 interface ColorCardProps {
     data: ColorInfo
@@ -15,8 +13,8 @@ interface ColorCardProps {
 export default function ColorCard({ data }: ColorCardProps) {
     const { hex, name, hsl } = data
     const theme = wcagContrast(hex, '#fff') > 3 ? 'light' : 'dark'
-
     const borderColor = `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l - 3.33}%)`
+    const textColor = theme === 'dark' ? 'text-black/90' : 'text-white/90'
 
     return (
         <div
@@ -26,7 +24,7 @@ export default function ColorCard({ data }: ColorCardProps) {
             <div
                 className={clsx(
                     'flex w-full items-center justify-between font-semibold text-lg',
-                    theme === 'dark' ? 'text-black/90' : 'text-white/90'
+                    textColor
                 )}
             >
                 <Link className='text-4xl hover:opacity-75 transition-opacity' href={`/${hex}`}>
@@ -34,12 +32,13 @@ export default function ColorCard({ data }: ColorCardProps) {
                 </Link>
                 <Copyable value={hex} />
             </div>
-            <div className='absolute bottom-0 left-0 p-4 w-full'>
-                <div className='float-right opacity-90'>
-                    <Link href={`/${removeHash(hex)}`} passHref>
-                        <OutlineButton theme={theme}>Saiba mais</OutlineButton>
-                    </Link>
-                </div>
+            <div
+                className={clsx(
+                    'absolute bottom-0 left-0 p-4 w-full opacity-90 text-lg',
+                    textColor
+                )}
+            >
+                <p>{data.name} [...]</p>
             </div>
         </div>
     )
