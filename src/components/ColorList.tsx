@@ -7,7 +7,7 @@ interface ColorListProps {
 
 export default function ColorList({ colors }: ColorListProps) {
     return (
-        <div className='flex flex-wrap items-center justify-between gap-2'>
+        <div className='grid grid-cols-10 gap-4'>
             {colors.map((color, index) => (
                 <Link
                     href={`/${removeHash(color)}`}
