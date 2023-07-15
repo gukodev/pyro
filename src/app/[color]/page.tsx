@@ -1,19 +1,20 @@
+import { Palette, Shuffle } from '@/assets/icons'
 import Button from '@/components/Button'
 import ColorCard from '@/components/ColorCard'
 import ColorDetails from '@/components/ColorDetails'
 import ColorList from '@/components/ColorList'
 import ColorTheory from '@/components/ColorTheory'
 import Pallete from '@/components/Pallete'
-import { ColorInfo, getRandomColor } from '@/util/color'
+import { ColorInfo, getColorInfo } from '@/util/color'
 import { removeHash } from '@/util/colorFormat'
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { Palette, Shuffle } from './../assets/icons'
+import { Item } from '../page'
 
-export interface Item {
-    id?: string
-    label?: string
-    component: React.ReactNode
+interface ColorPageProps {
+    params: {
+        color: string
+    }
 }
 
 let data: ColorInfo | null = null
@@ -36,8 +37,9 @@ export async function generateMetadata(): Promise<Metadata> {
     }
 }
 
-export default async function Home() {
-    data = await getRandomColor()
+export default async function ColorPage({ params }: ColorPageProps) {
+    const color = params.color as string
+    data = await getColorInfo(color as string)
 
     const items: Item[] = [
         {
@@ -81,10 +83,6 @@ export default async function Home() {
                     </div>
                 </div>
                 <div className='flex flex-col gap-8'>
-                    <div className='flex items-center gap-4 justify-between md:justify-normal'>
-                        <h1 className='text-4xl md:text-6xl font-bold'>Cor destaque</h1>
-                        <p className='text-slate-400'>reseta em 2 horas</p>
-                    </div>
                     <ColorCard data={data} />
                     <ColorDetails data={data} />
                     {items.map((x) => (
