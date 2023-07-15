@@ -5,3 +5,11 @@
 ::selection {
     @apply bg-black/75 text-white;
 }
+
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-red-400 rounded-full;
+}
