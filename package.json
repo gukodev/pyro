@@ -9,6 +9,7 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "@headlessui/react": "^1.7.15",
         "@phosphor-icons/react": "^2.0.10",
         "@types/culori": "^2.0.0",
         "@types/node": "^20.3.3",
