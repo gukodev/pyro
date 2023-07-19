@@ -1,11 +1,36 @@
 import Button from '@/components/Button'
 import ColorLink from '@/components/ColorLink'
 import NavBar from '@/components/NavBar'
-import { getRandomDarkColor } from '@/util/color'
+import { DarkColor, getRandomDarkColor } from '@/util/color'
+import { removeHash } from '@/util/colorFormat'
+import { Metadata } from 'next'
 import Link from 'next/link'
 
+let rndColor: DarkColor | null = null
+
+// metadata not supported at the moment
+// => https://github.com/vercel/next.js/issues/45620
+export async function generateMetadata(): Promise<Metadata> {
+    console.log(!rndColor)
+    if (!rndColor) return {}
+
+    const icon = {
+        url: `/favicon?hex=${removeHash(rndColor.hex)}`,
+        type: 'image/svg+xml',
+    }
+
+    return {
+        title: 'pyro - página não encontrada',
+        themeColor: rndColor.hex,
+        icons: {
+            icon,
+            shortcut: icon,
+        },
+    }
+}
+
 export default function Page404() {
-    const rndColor = getRandomDarkColor()
+    rndColor = getRandomDarkColor()
 
     return (
         <main className='mb-48'>
