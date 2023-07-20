@@ -1,5 +1,5 @@
 'use client'
 
-import { Copy, List, Palette, Shuffle, X } from '@phosphor-icons/react'
+import { Copy, Heart, List, Palette, Shuffle, X } from '@phosphor-icons/react'
 
-export { Copy, List, Palette, Shuffle, X }
+export { Copy, Heart, List, Palette, Shuffle, X }

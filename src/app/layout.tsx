@@ -1,3 +1,4 @@
+import Footer from '@/components/Footer'
 import clsx from 'clsx'
 import { Alexandria } from 'next/font/google'
 import './globals.css'
@@ -12,7 +13,10 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang='pt-BR'>
-            <body className={clsx(font.className, 'bg-slate-100')}>{children}</body>
+            <body className={clsx(font.className, 'bg-slate-100')}>
+                {children}
+                <Footer />
+            </body>
         </html>
     )
 }
