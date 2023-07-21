@@ -11,7 +11,6 @@ let rndColor: DarkColor | null = null
 // metadata not supported at the moment
 // => https://github.com/vercel/next.js/issues/45620
 export async function generateMetadata(): Promise<Metadata> {
-    console.log(!rndColor)
     if (!rndColor) return {}
 
     const icon = {
