@@ -14,7 +14,7 @@ interface MetadataProps {
 }
 
 export default function Metadata({ data }: MetadataProps) {
-    const { title, favicon } = data
+    const { title, favicon, themeColor } = data
 
     // Hydration check
     const [metadataSet, setMetadataSet] = useState<boolean>(false)
@@ -25,6 +25,9 @@ export default function Metadata({ data }: MetadataProps) {
         const head = document.head
 
         if (title) {
+            const existingTitle = head.querySelector('title')
+            if (existingTitle) existingTitle.remove()
+
             const titleEl = document.createElement('title')
             titleEl.innerText = title
             head.appendChild(titleEl)
@@ -35,6 +38,11 @@ export default function Metadata({ data }: MetadataProps) {
                 href: favicon,
                 type: 'image/svg+xml',
             }
+
+            const existingFavicon = head.querySelector('link[rel="icon"]')
+            const existingShortcut = head.querySelector('link[rel="shortcut icon"]')
+            if (existingFavicon) existingFavicon.remove()
+            if (existingShortcut) existingShortcut.remove()
 
             const faviconEl = document.createElement('link')
             const shortcutEl = document.createElement('link')
@@ -51,15 +59,18 @@ export default function Metadata({ data }: MetadataProps) {
             head.appendChild(shortcutEl)
         }
 
-        if (data.themeColor) {
+        if (themeColor) {
+            const existingThemeColor = head.querySelector('meta[name="theme-color"]')
+            if (existingThemeColor) existingThemeColor.remove()
+
             const themeColorEl = document.createElement('meta')
             themeColorEl.name = 'theme-color'
-            themeColorEl.content = data.themeColor
+            themeColorEl.content = themeColor
             head.appendChild(themeColorEl)
         }
 
         setMetadataSet(true)
     }, [])
 
-    return null
+    return <></>
 }
