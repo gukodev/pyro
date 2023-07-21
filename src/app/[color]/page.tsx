@@ -2,6 +2,7 @@ import ColorCard from '@/components/ColorCard'
 import ColorDetails from '@/components/ColorDetails'
 import ColorList from '@/components/ColorList'
 import ColorTheory from '@/components/ColorTheory'
+import Footer from '@/components/Footer'
 import NavBar from '@/components/NavBar'
 import Pallete from '@/components/Pallete'
 import { ColorInfo, getColorInfo } from '@/util/color'
@@ -68,20 +69,23 @@ export default async function ColorPage({ params }: ColorPageProps) {
     ]
 
     return (
-        <main className='mb-48'>
-            <div className='w-full max-w-screen-lg mx-auto px-4'>
-                <NavBar />
-                <div className='flex flex-col gap-8'>
-                    <ColorCard data={data} />
-                    <ColorDetails data={data} />
-                    {items.map((x) => (
-                        <div className='flex flex-col gap-2' key={x.id || x.label}>
-                            {x.label && <h1 className='text-2xl font-bold'>{x.label}</h1>}
-                            {x.component}
-                        </div>
-                    ))}
+        <>
+            <main className='mb-48'>
+                <div className='w-full max-w-screen-lg mx-auto px-4'>
+                    <NavBar />
+                    <div className='flex flex-col gap-8'>
+                        <ColorCard data={data} />
+                        <ColorDetails data={data} />
+                        {items.map((x) => (
+                            <div className='flex flex-col gap-2' key={x.id || x.label}>
+                                {x.label && <h1 className='text-2xl font-bold'>{x.label}</h1>}
+                                {x.component}
+                            </div>
+                        ))}
+                    </div>
                 </div>
-            </div>
-        </main>
+            </main>
+            <Footer />
+        </>
     )
 }
