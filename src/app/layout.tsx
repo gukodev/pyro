@@ -12,10 +12,10 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <RandomColorLoadingProvider>
-            <html lang='pt-BR'>
-                <body className={clsx(font.className, 'bg-slate-100')}>{children}</body>
-            </html>
-        </RandomColorLoadingProvider>
+        <html lang='pt-BR'>
+            <body className={clsx(font.className, 'bg-slate-100')}>
+                <RandomColorLoadingProvider>{children}</RandomColorLoadingProvider>
+            </body>
+        </html>
     )
 }

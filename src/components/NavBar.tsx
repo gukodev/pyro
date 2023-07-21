@@ -11,10 +11,11 @@ import Button from './Button'
 import { MobileNavLink } from './MobileNavLink'
 
 export default function NavBar() {
-    // Mobile navbar
-    const [open, setOpen] = useState(false)
     const router = useRouter()
     const hooks = useRandomColorLoading()
+
+    // Mobile navbar
+    const [open, setOpen] = useState(false)
 
     useEffect(() => {
         document.body.style.overflow = open ? 'hidden' : ''
