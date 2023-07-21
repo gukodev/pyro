@@ -23,11 +23,9 @@ export default function Metadata({ data }: MetadataProps) {
         if (metadataSet) return
 
         const head = document.head
+        if (!head) return
 
         if (title) {
-            const existingTitle = head.querySelector('title')
-            if (existingTitle) existingTitle.remove()
-
             const titleEl = document.createElement('title')
             titleEl.innerText = title
             head.appendChild(titleEl)
@@ -38,11 +36,6 @@ export default function Metadata({ data }: MetadataProps) {
                 href: favicon,
                 type: 'image/svg+xml',
             }
-
-            const existingFavicon = head.querySelector('link[rel="icon"]')
-            const existingShortcut = head.querySelector('link[rel="shortcut icon"]')
-            if (existingFavicon) existingFavicon.remove()
-            if (existingShortcut) existingShortcut.remove()
 
             const faviconEl = document.createElement('link')
             const shortcutEl = document.createElement('link')
@@ -60,9 +53,6 @@ export default function Metadata({ data }: MetadataProps) {
         }
 
         if (themeColor) {
-            const existingThemeColor = head.querySelector('meta[name="theme-color"]')
-            if (existingThemeColor) existingThemeColor.remove()
-
             const themeColorEl = document.createElement('meta')
             themeColorEl.name = 'theme-color'
             themeColorEl.content = themeColor
