@@ -1,10 +1,11 @@
 'use client'
 
 import { Heart } from '@/assets/icons'
+import { useRandomColorLoading } from '@/contexts/RandomColorLoading'
+import { randomColorRedirect } from '@/util/random'
 import clsx from 'clsx'
 import NextLink from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 
 interface FooterLinkProps {
     href: string
@@ -80,22 +81,8 @@ function FooterItem({ item }: FooterItemProps) {
 }
 
 export default function Footer() {
-    const [btnLoading, setBtnLoading] = useState(false)
     const router = useRouter()
-
-    const handleRandomColor = async () => {
-        if (btnLoading) return
-        setBtnLoading(true)
-
-        try {
-            const req = await fetch('/api/random')
-            const hex = await req.text()
-            return router.push(`/${hex}`)
-        } catch (err) {
-            console.log(err)
-            setBtnLoading(false)
-        }
-    }
+    const hooks = useRandomColorLoading()
 
     const footerItems: FooterItemType[] = [
         {
@@ -109,7 +96,7 @@ export default function Footer() {
                 {
                     label: 'Cor aleatória',
                     type: 'button',
-                    onClick: handleRandomColor,
+                    onClick: () => randomColorRedirect(router, hooks),
                 },
             ],
         },

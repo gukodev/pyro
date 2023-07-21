@@ -1,6 +1,8 @@
 'use client'
 
 import { List, Palette, Shuffle, X } from '@/assets/icons'
+import { useRandomColorLoading } from '@/contexts/RandomColorLoading'
+import { randomColorRedirect } from '@/util/random'
 import { Transition } from '@headlessui/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -11,23 +13,8 @@ import { MobileNavLink } from './MobileNavLink'
 export default function NavBar() {
     // Mobile navbar
     const [open, setOpen] = useState(false)
-
-    const [btnLoading, setBtnLoading] = useState(false)
     const router = useRouter()
-
-    const handleRandomColor = async () => {
-        if (btnLoading) return
-        setBtnLoading(true)
-
-        try {
-            const req = await fetch('/api/random')
-            const hex = await req.text()
-            return router.push(`/${hex}`)
-        } catch (err) {
-            console.log(err)
-            setBtnLoading(false)
-        }
-    }
+    const hooks = useRandomColorLoading()
 
     useEffect(() => {
         document.body.style.overflow = open ? 'hidden' : ''
@@ -57,7 +44,10 @@ export default function NavBar() {
                         <div className='flex flex-col gap-8 mt-8'>
                             <MobileNavLink href='/'>Início</MobileNavLink>
                             <MobileNavLink href='/paletas'>Paletas</MobileNavLink>
-                            <MobileNavLink button onClick={handleRandomColor}>
+                            <MobileNavLink
+                                button
+                                onClick={() => randomColorRedirect(router, hooks)}
+                            >
                                 Cor aleatória
                             </MobileNavLink>
                         </div>
@@ -76,7 +66,7 @@ export default function NavBar() {
                             Paletas
                         </Button>
                     </Link>
-                    <Button onClick={handleRandomColor}>
+                    <Button onClick={() => randomColorRedirect(router, hooks)}>
                         <Shuffle size={22} weight='bold' />
                         Cor aleatória
                     </Button>

@@ -5,6 +5,7 @@ import ColorTheory from '@/components/ColorTheory'
 import Footer from '@/components/Footer'
 import NavBar from '@/components/NavBar'
 import Palette from '@/components/Palette'
+import RegenerateColorMobileButton from '@/components/RegenerateColorMobileButton'
 import { ColorInfo, getColorInfo } from '@/util/color'
 import { getFullLengthHex, isValidColor, removeHash } from '@/util/colorFormat'
 import { Metadata } from 'next'
@@ -71,6 +72,7 @@ export default async function ColorPage({ params }: ColorPageProps) {
     return (
         <>
             <main className='mb-48'>
+                <RegenerateColorMobileButton />
                 <div className='w-full max-w-screen-lg mx-auto px-4'>
                     <NavBar />
                     <div className='flex flex-col gap-8'>
