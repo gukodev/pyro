@@ -1,9 +1,10 @@
-import { Color, Hsv, differenceCiede2000, formatHex, hsl, hsv, nearest, rgb } from 'culori'
+import { differenceCiede2000, hsl, hsv, nearest, rgb } from 'culori'
 import fs from 'fs'
 import path from 'path'
 import { HSL, HSV, RGB, addHash, formatHSL, formatHSV, formatRGB } from './colorFormat'
 import { getTodayDate } from './date'
 import { createCacheFile, getCacheFile } from './file'
+import * as palette from './palette'
 
 interface CachedFile {
     info: ColorInfo
@@ -23,11 +24,8 @@ export interface ColorInfo {
     hex: string
     name: string
     nearestNamedColor: string
-    shades: string[]
-    tints: string[]
-    hues: string[]
     related: string[]
-    theory: ColorTheory
+    palettes: palette.Palettes
     percent: {
         r: number
         g: number
@@ -118,24 +116,10 @@ export function getRandomNamedColor(): ColorInfo {
 }
 
 // Generates a random hex color value
-export function getRandomColor(length?: number): string[] | string {
-    function generateRandomHexColor(): string {
-        const randomColor = Math.floor(Math.random() * 16777215).toString(16)
-        const paddedColor = randomColor.padStart(6, '0')
-        return `#${paddedColor}`
-    }
-
-    if (!length) {
-        return generateRandomHexColor()
-    }
-
-    const colors: string[] = []
-    for (let i = 0; i < length; i++) {
-        const color = generateRandomHexColor()
-        colors.push(color)
-    }
-
-    return colors
+export function getRandomColor(): string {
+    const randomColor = Math.floor(Math.random() * 16777215).toString(16)
+    const paddedColor = randomColor.padStart(6, '0')
+    return `#${paddedColor}`
 }
 
 export function getColorInfo(hex: string): ColorInfo {
@@ -159,11 +143,8 @@ export function getColorInfo(hex: string): ColorInfo {
         hex: hex.toLowerCase(),
         name: rawColors[cNearest],
         nearestNamedColor: addHash(cNearest),
-        shades: colorShades(hex),
-        tints: colorTints(hex),
-        hues: colorHues(hex),
         related,
-        theory: colorTheory(hex),
+        palettes: palette.generateAll(hex),
         percent: {
             r: Math.round((_rgb?.r || 0) * 100),
             g: Math.round((_rgb?.g || 0) * 100),
@@ -241,126 +222,6 @@ export function getDailyColor(): ColorInfo {
     }
 
     return data.info
-}
-
-// Generates 10 hues of a color
-// Shade => mix with black
-export function colorShades(color: string) {
-    const length = 10
-    const HSV = hsv(color)
-    let res = []
-
-    const V = HSV?.v || 0
-    const toSubtract = V / length
-
-    for (let i = 0; i < length; i++) {
-        const newHSV = { ...HSV, v: V - toSubtract * i }
-        const newHex = formatHex(newHSV as Color)
-        res.push(newHex)
-    }
-
-    return res
-}
-
-// Generates 10 tints of a color
-// Tint => mix with white
-export function colorTints(color: string) {
-    const length = 10
-    const HSV = hsv(color)
-    let res = []
-
-    const S = HSV?.s || 0
-    const V = HSV?.v || 0
-    const subtractS = S / length
-    const addV = (1 - V) / length
-
-    for (let i = 0; i < length; i++) {
-        const newHSV = { ...HSV, s: S - subtractS * i, v: V + addV * i }
-        const newHex = formatHex(newHSV as Color)
-        res.push(newHex)
-    }
-
-    return res
-}
-
-// Generates 10 hues of a color
-export function colorHues(color: string) {
-    const length = 10
-    const HSV = hsv(color)
-    let res = []
-
-    const H = HSV?.h || 0
-    const toAdd = 360 / length
-
-    for (let i = 0; i < length; i++) {
-        const newHSV = { ...HSV, h: H + toAdd * i }
-        const newHex = formatHex(newHSV as Color)
-        res.push(newHex)
-    }
-
-    return res
-}
-
-export function complementary(hsv: Hsv): string[] {
-    const H = hsv?.h || 0
-    const newHSV = { ...hsv, h: (H + 180) % 360 }
-    const orig = formatHex(hsv as Color)
-    return [orig, formatHex(newHSV as Color)]
-}
-
-export function splitComplementary(hsv: Hsv): string[] {
-    const H = hsv?.h || 0
-    const newHSV1 = { ...hsv, h: (H + 150) % 360 }
-    const newHSV2 = { ...hsv, h: (H + 210) % 360 }
-    const color = formatHex(hsv as Color)
-    return [color, formatHex(newHSV1 as Color), formatHex(newHSV2 as Color)]
-}
-
-export function analogous(hsv: Hsv): string[] {
-    const H = hsv?.h || 0
-    const newHSV1 = { ...hsv, h: (H + 30) % 360 }
-    const newHSV2 = { ...hsv, h: (H + 330) % 360 }
-    const color = formatHex(hsv as Color)
-    return [color, formatHex(newHSV1 as Color), formatHex(newHSV2 as Color)]
-}
-
-export function triadic(hsv: Hsv): string[] {
-    const H = hsv?.h || 0
-    const newHSV1 = { ...hsv, h: (H + 120) % 360 }
-    const newHSV2 = { ...hsv, h: (H + 240) % 360 }
-    const color = formatHex(hsv as Color)
-    return [color, formatHex(newHSV1 as Color), formatHex(newHSV2 as Color)]
-}
-
-export function tetradic(hsv: Hsv): string[] {
-    const H = hsv?.h || 0
-    const newHSV1 = { ...hsv, h: (H + 60) % 360 }
-    const newHSV2 = { ...hsv, h: (H + 180) % 360 }
-    const newHSV3 = { ...hsv, h: (H + 240) % 360 }
-    const color = formatHex(hsv as Color)
-    return [
-        color,
-        formatHex(newHSV1 as Color),
-        formatHex(newHSV2 as Color),
-        formatHex(newHSV3 as Color),
-    ]
-}
-
-export function colorTheory(color: string): ColorTheory {
-    const _hsv = hsv(color) as Hsv
-    const comp = complementary(_hsv)
-    const splitComp = splitComplementary(_hsv)
-    const analog = analogous(_hsv)
-    const triad = triadic(_hsv)
-    const tetra = tetradic(_hsv)
-
-    return {
-        complementary: comp,
-        splitComplementary: splitComp,
-        analogous: analog,
-        triadic: triad,
-        tetradic: tetra,
-    }
 }
 
 // function getDarkColors(length: number = 1000) {

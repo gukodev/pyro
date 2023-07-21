@@ -45,19 +45,19 @@ export default async function Home() {
     const items: Item[] = [
         {
             label: 'Tons escuros',
-            component: <Pallete colors={data.shades} linkColors />,
+            component: <Pallete colors={data.palettes.shades} linkColors />,
         },
         {
             label: 'Tons claros',
-            component: <Pallete colors={data.tints} linkColors />,
+            component: <Pallete colors={data.palettes.tints} linkColors />,
         },
         {
             label: 'Hue',
-            component: <Pallete colors={data.hues} linkColors />,
+            component: <Pallete colors={data.palettes.hues} linkColors />,
         },
         {
             id: 'theory',
-            component: <ColorTheory colors={data.theory} />,
+            component: <ColorTheory colors={data.palettes.theory} />,
         },
         {
             label: 'Cores relacionadas',
