@@ -56,7 +56,7 @@ export default function NavBar() {
                         </div>
                         <div className='flex flex-col gap-8 mt-8'>
                             <MobileNavLink href='/'>Início</MobileNavLink>
-                            <MobileNavLink href='#'>Paletas</MobileNavLink>
+                            <MobileNavLink href='/paletas'>Paletas</MobileNavLink>
                             <MobileNavLink button onClick={handleRandomColor}>
                                 Cor aleatória
                             </MobileNavLink>
@@ -70,10 +70,12 @@ export default function NavBar() {
                     <h1 className='text-4xl font-bold'>🔥 pyro</h1>
                 </Link>
                 <div className='hidden md:flex items-center gap-4'>
-                    <Button ghost>
-                        <Palette size={22} weight='bold' />
-                        Paletas
-                    </Button>
+                    <Link href='/paletas' passHref>
+                        <Button ghost>
+                            <Palette size={22} weight='bold' />
+                            Paletas
+                        </Button>
+                    </Link>
                     <Button onClick={handleRandomColor}>
                         <Shuffle size={22} weight='bold' />
                         Cor aleatória
