@@ -4,7 +4,7 @@ import ColorList from '@/components/ColorList'
 import ColorTheory from '@/components/ColorTheory'
 import Footer from '@/components/Footer'
 import NavBar from '@/components/NavBar'
-import Pallete from '@/components/Pallete'
+import Palette from '@/components/Palette'
 import ResetTimer from '@/components/ResetTimer'
 import { ColorInfo, getDailyColor } from '@/util/color'
 import { removeHash } from '@/util/colorFormat'
@@ -45,15 +45,15 @@ export default async function Home() {
     const items: Item[] = [
         {
             label: 'Tons escuros',
-            component: <Pallete colors={data.palettes.shades} linkColors />,
+            component: <Palette colors={data.palettes.shades} linkColors />,
         },
         {
             label: 'Tons claros',
-            component: <Pallete colors={data.palettes.tints} linkColors />,
+            component: <Palette colors={data.palettes.tints} linkColors />,
         },
         {
             label: 'Hue',
-            component: <Pallete colors={data.palettes.hues} linkColors />,
+            component: <Palette colors={data.palettes.hues} linkColors />,
         },
         {
             id: 'theory',

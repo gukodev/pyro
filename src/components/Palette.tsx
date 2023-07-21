@@ -8,7 +8,7 @@ interface PalleteProps {
     size?: 'sm' | 'md' | 'lg'
 }
 
-export default function Pallete({ colors, linkColors = false, size = 'md' }: PalleteProps) {
+export default function Palette({ colors, linkColors = false, size = 'md' }: PalleteProps) {
     const height = size === 'sm' ? 64 : size === 'md' ? 96 : 128
 
     const commonStyles = (color: string, index: number, button?: boolean) => {

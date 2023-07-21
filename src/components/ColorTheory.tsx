@@ -1,6 +1,6 @@
 import colorTheoryLabels from '@/assets/data/colorTheoryLabels.json'
 import { ColorTheory } from '@/util/color'
-import Pallete from './Pallete'
+import Palette from './Palette'
 
 interface ColorTheoryProps {
     colors: ColorTheory
@@ -18,7 +18,7 @@ export default function ColorTheory({ colors }: ColorTheoryProps) {
             {Object.entries(colors).map((x) => (
                 <div className='flex flex-col gap-2' key={x[0]}>
                     <h1 className='text-2xl font-bold'>{getLabel(x[0] as Labels)}</h1>
-                    <Pallete colors={x[1]} linkColors />
+                    <Palette colors={x[1]} linkColors />
                 </div>
             ))}
         </div>
