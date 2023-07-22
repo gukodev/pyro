@@ -23,7 +23,7 @@ export async function randomColorRedirect(
         const req = await fetch('/api/random')
         const hex = await req.text()
         router.push(`/${hex}`)
-        setTimeout(() => setIsLoading(false), 750) // Cooldown
+        setTimeout(() => setIsLoading(false), 500) // Cooldown
     } catch (err) {
         console.log(err)
         setIsLoading(false)
