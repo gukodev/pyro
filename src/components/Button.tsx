@@ -1,12 +1,20 @@
+import { CircleNotch } from '@/assets/icons'
 import clsx from 'clsx'
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    ghost?: boolean
     children: React.ReactNode
+    loading?: boolean
+    ghost?: boolean
     className?: string
 }
 
-export default function Button({ children, ghost, className, ...rest }: ButtonProps) {
+export default function Button({
+    children,
+    ghost,
+    className,
+    loading = false,
+    ...rest
+}: ButtonProps) {
     const primary = [
         'enabled:bg-red-500 enabled:hover:bg-red-400 disabled:bg-gray-300',
         'enabled:text-white disabled:text-gray-500',
@@ -20,6 +28,7 @@ export default function Button({ children, ghost, className, ...rest }: ButtonPr
     return (
         <button
             {...rest}
+            disabled={loading || rest.disabled}
             className={clsx(
                 'inline-flex gap-2 p-3 items-center justify-center text-center leading-0 rounded-2xl font-semibold selection-none transition-colors',
                 'enabled:cursor-pointer disabled:cursor-not-allowed',
@@ -27,7 +36,7 @@ export default function Button({ children, ghost, className, ...rest }: ButtonPr
                 className
             )}
         >
-            {children}
+            {loading ? <CircleNotch size={24} weight='bold' className='animate-spin' /> : children}
         </button>
     )
 }
