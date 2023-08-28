@@ -3,9 +3,9 @@
 import { Heart } from '@/assets/icons'
 import { useRandomColorLoading } from '@/contexts/RandomColorLoading'
 import { randomColorRedirect } from '@/util/random'
-import clsx from 'clsx'
 import NextLink from 'next/link'
 import { useRouter } from 'next/navigation'
+import { twMerge } from 'tailwind-merge'
 
 interface FooterLinkProps {
     href: string
@@ -19,7 +19,7 @@ function Link({ children, href, target, underline = false }: FooterLinkProps) {
         <NextLink
             href={href}
             target={target || '_blank'}
-            className={clsx(
+            className={twMerge(
                 'hover:text-red-600 text-black transition-colors',
                 underline ? 'hover:underline' : ''
             )}

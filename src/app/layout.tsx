@@ -1,6 +1,6 @@
 import { RandomColorLoadingProvider } from '@/contexts/RandomColorLoading'
-import clsx from 'clsx'
 import { Alexandria } from 'next/font/google'
+import { twMerge } from 'tailwind-merge'
 import './globals.css'
 
 const font = Alexandria({ subsets: ['latin'] })
@@ -13,7 +13,7 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang='pt-BR'>
-            <body className={clsx(font.className, 'bg-slate-100')}>
+            <body className={twMerge(font.className, 'bg-slate-100')}>
                 <RandomColorLoadingProvider>{children}</RandomColorLoadingProvider>
             </body>
         </html>

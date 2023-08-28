@@ -4,6 +4,7 @@ import Button from '@/components/Button'
 import Metadata from '@/components/Metadata'
 import NavBar from '@/components/NavBar'
 import { ErrorReportBody } from '@/util/errorHandling/types'
+import axios from 'axios'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
@@ -57,15 +58,8 @@ export default function Error({ error }: { error: Error }) {
         }
 
         try {
-            const res = await fetch('/api/reportError', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(body),
-            })
-
-            const data = await res.json()
+            const res = await axios.post('/api/reportError', body)
+            const { data } = res
             setButtonLoading(false)
 
             if (data.success) {

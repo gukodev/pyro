@@ -1,4 +1,4 @@
-import fetch from 'node-fetch'
+import axios from 'axios'
 import { ErrorReportBody } from './types'
 
 interface DiscordEmbed {
@@ -63,13 +63,7 @@ export async function sendErrorReport(
     }
 
     try {
-        await fetch(webhookUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ embeds: [embed] }),
-        })
+        await axios.post(webhookUrl, { embeds: [embed] })
         console.log('[Error Report] Um erro foi reportado com sucesso.')
     } catch (err) {
         console.error('[Error Report] Não foi possível reportar um erro:', err)

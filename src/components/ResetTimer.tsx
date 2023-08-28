@@ -27,5 +27,5 @@ export default function ResetTimer({ remaining }: { remaining: string }) {
         return () => clearInterval(interval)
     }, [])
 
-    return <p className='text-slate-400'>reseta em {text}</p>
+    return <p className='text-slate-400'>nova cor em {text}</p>
 }

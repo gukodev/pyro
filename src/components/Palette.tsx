@@ -1,6 +1,6 @@
 import { removeHash } from '@/util/colorFormat'
-import clsx from 'clsx'
 import Link from 'next/link'
+import { twMerge } from 'tailwind-merge'
 
 interface PalleteProps {
     colors: string[]
@@ -13,7 +13,7 @@ export default function Palette({ colors, linkColors = false, size = 'md' }: Pal
 
     const commonStyles = (color: string, index: number, button?: boolean) => {
         return {
-            className: clsx(
+            className: twMerge(
                 'w-full flex flex-1 transition-all',
                 index === 0 ? 'rounded-l-2xl' : '',
                 index === colors.length - 1 ? 'rounded-r-2xl' : '',

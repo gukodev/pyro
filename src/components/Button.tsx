@@ -1,5 +1,5 @@
 import { CircleNotch } from '@/assets/icons'
-import clsx from 'clsx'
+import { twMerge } from 'tailwind-merge'
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     children: React.ReactNode
@@ -29,7 +29,7 @@ export default function Button({
         <button
             {...rest}
             disabled={loading || rest.disabled}
-            className={clsx(
+            className={twMerge(
                 'inline-flex gap-2 p-3 items-center justify-center text-center leading-0 rounded-2xl font-semibold selection-none transition-colors',
                 'enabled:cursor-pointer disabled:cursor-not-allowed',
                 ghost ? ghostStyle : primary,

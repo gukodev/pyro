@@ -1,4 +1,4 @@
-import clsx from 'clsx'
+import { twMerge } from 'tailwind-merge'
 
 interface OutlineButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     theme?: 'red' | 'light' | 'dark'
@@ -18,7 +18,7 @@ export default function OutlineButton({ children, className, theme, ...rest }: O
     return (
         <button
             {...rest}
-            className={clsx(
+            className={twMerge(
                 'inline-flex gap-2 p-3 items-center leading-0 rounded-2xl font-semibold selection-none border-2 transition-colors',
                 'enabled:cursor-pointer disabled:cursor-not-allowed bg-transparent disabled:text-gray-500',
                 currentTheme,

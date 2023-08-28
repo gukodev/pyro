@@ -2,9 +2,9 @@
 
 import { ColorInfo } from '@/util/color'
 import { removeHash } from '@/util/colorFormat'
-import clsx from 'clsx'
 import { wcagContrast } from 'culori'
 import Link from 'next/link'
+import { twMerge } from 'tailwind-merge'
 import Copyable from './Copyable'
 
 interface ColorCardProps {
@@ -27,7 +27,7 @@ export default function ColorCard({ data }: ColorCardProps) {
             style={{ backgroundColor: hex, borderColor }}
         >
             <div
-                className={clsx(
+                className={twMerge(
                     'flex w-full items-center justify-between font-semibold text-lg',
                     textColor
                 )}
@@ -41,7 +41,7 @@ export default function ColorCard({ data }: ColorCardProps) {
                 <Copyable value={hex} />
             </div>
             <div
-                className={clsx(
+                className={twMerge(
                     'absolute bottom-0 left-0 p-4 w-full opacity-90 text-lg',
                     textColor
                 )}
