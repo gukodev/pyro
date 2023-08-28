@@ -1,50 +1,43 @@
 'use client'
 
 import { Heart } from '@/assets/icons'
-import { useRandomColorLoading } from '@/contexts/RandomColorLoading'
-import { randomColorRedirect } from '@/util/random'
 import NextLink from 'next/link'
-import { useRouter } from 'next/navigation'
 import { twMerge } from 'tailwind-merge'
 
 interface FooterLinkProps {
     href: string
+    legacy?: boolean
     target?: string
     children: React.ReactNode
     underline?: boolean
 }
 
-function Link({ children, href, target, underline = false }: FooterLinkProps) {
-    return (
-        <NextLink
-            href={href}
-            target={target || '_blank'}
-            className={twMerge(
-                'hover:text-red-600 text-black transition-colors',
-                underline ? 'hover:underline' : ''
-            )}
-        >
-            {children}
-        </NextLink>
-    )
+function Link({ children, href, target, underline = false, legacy = false }: FooterLinkProps) {
+    const commonProps = {
+        href: href,
+        target: target || '_blank',
+        className: twMerge(
+            'hover:text-red-600 text-black transition-colors',
+            underline ? 'hover:underline' : ''
+        ),
+    }
+
+    if (legacy) {
+        return <a {...commonProps}>{children}</a>
+    }
+
+    return <NextLink {...commonProps}>{children}</NextLink>
 }
 
+interface ItemType {
+    label: string
+    type: string
+    href: string
+    legacy?: boolean
+}
 type FooterItemType = {
     title: string
-    items: (
-        | {
-              label: string
-              type: string
-              href: string
-              onClick?: undefined
-          }
-        | {
-              label: string
-              type: string
-              onClick: () => Promise<void>
-              href?: undefined
-          }
-    )[]
+    items: ItemType[]
 }
 
 interface FooterItemProps {
@@ -57,22 +50,10 @@ function FooterItem({ item }: FooterItemProps) {
             <h1 className='text-3xl font-bold'>{item.title}</h1>
             <div className='flex flex-col gap-1.5 text-xl'>
                 {item.items.map((x) => {
-                    if (x.type === 'link') {
-                        return (
-                            <Link href={x?.href || '#'} key={x.label} target='_self'>
-                                {x.label}
-                            </Link>
-                        )
-                    }
-
                     return (
-                        <button
-                            className='hover:text-red-600 text-left transition-colors'
-                            onClick={x.onClick}
-                            key={x.label}
-                        >
+                        <Link href={x.href} legacy={x.legacy || false} key={x.label} target='_self'>
                             {x.label}
-                        </button>
+                        </Link>
                     )
                 })}
             </div>
@@ -81,9 +62,6 @@ function FooterItem({ item }: FooterItemProps) {
 }
 
 export default function Footer() {
-    const router = useRouter()
-    const hooks = useRandomColorLoading()
-
     const footerItems: FooterItemType[] = [
         {
             title: 'Ferramentas',
@@ -95,8 +73,9 @@ export default function Footer() {
                 },
                 {
                     label: 'Cor aleatória',
-                    type: 'button',
-                    onClick: () => randomColorRedirect(router, hooks),
+                    type: 'link',
+                    href: '/random',
+                    legacy: true,
                 },
             ],
         },

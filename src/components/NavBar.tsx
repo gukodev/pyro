@@ -1,8 +1,6 @@
 'use client'
 
 import { List, Palette, Shuffle, X } from '@/assets/icons'
-import { useRandomColorLoading } from '@/contexts/RandomColorLoading'
-import { randomColorRedirect } from '@/util/random'
 import { Transition } from '@headlessui/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -12,7 +10,6 @@ import { MobileNavLink } from './MobileNavLink'
 
 export default function NavBar() {
     const router = useRouter()
-    const hooks = useRandomColorLoading()
 
     // Mobile navbar
     const [open, setOpen] = useState(false)
@@ -45,10 +42,7 @@ export default function NavBar() {
                         <div className='flex flex-col gap-8 mt-8'>
                             <MobileNavLink href='/'>Início</MobileNavLink>
                             <MobileNavLink href='/paletas'>Paletas</MobileNavLink>
-                            <MobileNavLink
-                                button
-                                onClick={() => randomColorRedirect(router, hooks)}
-                            >
+                            <MobileNavLink href='/random' legacy>
                                 Cor aleatória
                             </MobileNavLink>
                         </div>
@@ -67,10 +61,12 @@ export default function NavBar() {
                             Paletas
                         </Button>
                     </Link>
-                    <Button onClick={() => randomColorRedirect(router, hooks)}>
-                        <Shuffle size={22} weight='bold' />
-                        Cor aleatória
-                    </Button>
+                    <a href='/random'>
+                        <Button>
+                            <Shuffle size={22} weight='bold' />
+                            Cor aleatória
+                        </Button>
+                    </a>
                 </div>
                 <div className='flex md:hidden items-center gap-4'>
                     <Button onClick={() => setOpen(!open)}>

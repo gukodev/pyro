@@ -3,6 +3,7 @@ import Link from 'next/link'
 interface MobileNavLinkProps {
     children: React.ReactNode
     href: string
+    legacy?: boolean
     button?: false
     onClick?: never
 }
@@ -22,6 +23,14 @@ export function MobileNavLink(props: MobileNavLinkProps | MobileNavLinkPropsIfBu
             <button className={classes} onClick={props.onClick}>
                 {children}
             </button>
+        )
+    }
+
+    if (props.legacy) {
+        return (
+            <a href={props.href} className={classes}>
+                {children}
+            </a>
         )
     }
 
