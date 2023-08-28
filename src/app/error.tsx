@@ -57,22 +57,34 @@ export default function Error({ error }: { error: Error }) {
             message: parseMessage(message),
         }
 
-        try {
-            const res = await axios.post('/api/reportError', body)
-            const { data } = res
-            setButtonLoading(false)
+        axios
+            .post('/api/reportError', body)
+            .then((res) => {
+                const data = res.data
 
-            if (data.success) {
-                alert('Erro reportado com sucesso! Obrigado por nos ajudar a melhorar o site :)')
-            } else {
+                if (data.success) {
+                    alert(
+                        'Erro reportado com sucesso! Obrigado por nos ajudar a melhorar o site :)'
+                    )
+                    return
+                } else {
+                    alert('Ocorreu um erro ao reportar o erro. Tente novamente mais tarde.')
+                    console.log(data)
+                }
+            })
+            .catch((err) => {
+                const data = err.response?.data
+                if (data && data.rateLimited) {
+                    alert('Você já reportou um erro recentemente. Tente novamente mais tarde!')
+                    return
+                }
+
                 alert('Ocorreu um erro ao reportar o erro. Tente novamente mais tarde.')
-                console.log(data)
-            }
-        } catch (err) {
-            console.error(err)
-            setButtonLoading(false)
-            alert('Ocorreu um erro ao reportar o erro. Tente novamente mais tarde.')
-        }
+                console.log(err)
+            })
+            .finally(() => {
+                setButtonLoading(false)
+            })
     }
 
     return (
