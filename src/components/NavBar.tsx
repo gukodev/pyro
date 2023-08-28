@@ -57,8 +57,8 @@ export default function NavBar() {
                 </div>
             </Transition>
             <div className='py-6 border-b-4 border-slate-200 flex items-center justify-between mb-8'>
-                <Link href='/'>
-                    <h1 className='text-4xl font-bold'>🔥 pyro</h1>
+                <Link href='/' className='text-4xl font-bold select-none'>
+                    🔥 pyro
                 </Link>
                 <div className='hidden md:flex items-center gap-4'>
                     <Link href='/paletas' passHref>
