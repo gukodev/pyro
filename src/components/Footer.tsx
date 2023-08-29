@@ -79,6 +79,16 @@ export default function Footer() {
                 },
             ],
         },
+        {
+            title: 'API',
+            items: [
+                {
+                    label: 'Documentação',
+                    type: 'link',
+                    href: '/docs',
+                },
+            ],
+        },
     ]
 
     return (
@@ -92,7 +102,8 @@ export default function Footer() {
                 <div className='w-full h-[2px] bg-slate-300 my-16' />
                 <div className='block text-sm'>
                     <span>
-                        Criado com <Heart weight='fill' className='inline text-red-500 text-xl' />{' '}
+                        Criado com{' '}
+                        <Heart weight='fill' className='inline text-red-500 text-xl heart-pulse' />{' '}
                         por{' '}
                         <Link href={process.env.GITHUB_AUTHOR} underline>
                             {process.env.AUTHOR_NAME}

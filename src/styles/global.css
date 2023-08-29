@@ -13,3 +13,25 @@
 ::-webkit-scrollbar-thumb {
     @apply bg-red-400 rounded-full;
 }
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    40% {
+        transform: scale(1.1);
+    }
+    50% {
+        transform: scale(1);
+    }
+    60% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.heart-pulse {
+    animation: pulse 1.25s infinite ease-in-out;
+}
