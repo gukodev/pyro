@@ -247,21 +247,25 @@ export function getSuggestions(query: string, size: number = 5): ISuggestion[] {
                 hex: addHash(hex),
                 href: `/${removeHash(hex)}`,
             })
-
-            if (suggestions.length === size) break
         }
     }
 
     // Sort by name
     suggestions.sort((a, b) => {
-        const aNameStartsWithQuery = a.name.toLowerCase().startsWith(lowerQuery)
-        const bNameStartsWithQuery = b.name.toLowerCase().startsWith(lowerQuery)
+        const aLower = a.name.toLowerCase()
+        const bLower = b.name.toLowerCase()
 
-        if (aNameStartsWithQuery && !bNameStartsWithQuery) {
-            return -1
-        } else if (!aNameStartsWithQuery && bNameStartsWithQuery) {
-            return 1
-        }
+        const aEqualsQuery = aLower === lowerQuery
+        const bEqualsQuery = bLower === lowerQuery
+
+        if (aEqualsQuery && !bEqualsQuery) return -1
+        if (!aEqualsQuery && bEqualsQuery) return 1
+
+        const aNameStartsWithQuery = aLower.startsWith(lowerQuery)
+        const bNameStartsWithQuery = bLower.startsWith(lowerQuery)
+
+        if (aNameStartsWithQuery && !bNameStartsWithQuery) return -1
+        if (!aNameStartsWithQuery && bNameStartsWithQuery) return 1
 
         return 0
     })
@@ -276,7 +280,7 @@ export function getSuggestions(query: string, size: number = 5): ISuggestion[] {
         ]
     }
 
-    return suggestions
+    return suggestions.slice(0, size)
 }
 
 // function getDarkColors(length: number = 1000) {
