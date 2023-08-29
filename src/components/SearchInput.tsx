@@ -12,10 +12,13 @@ import { useEffect, useState } from 'react'
 import { HexColorPicker } from 'react-colorful'
 import { twMerge } from 'tailwind-merge'
 
-export function Suggestion({ data }: { data: ISuggestion }) {
+export function Suggestion({ data, size }: { data: ISuggestion; size: 'md' | 'xl' }) {
     return (
         <Link
-            className='p-2 flex items-center gap-2 transition-colors hover:bg-zinc-100'
+            className={twMerge(
+                'p-2 flex items-center transition-colors hover:bg-zinc-100',
+                size === 'md' ? 'gap-2' : 'gap-4'
+            )}
             href={data.href}
         >
             <div
@@ -25,8 +28,19 @@ export function Suggestion({ data }: { data: ISuggestion }) {
                 }}
             />
             <div>
-                <span className='block text-sm font-bold'>{data.hex}</span>
-                <span className='block text-xs text-gray-500'>{data.name}</span>
+                <span
+                    className={twMerge('block font-bold', size === 'md' ? 'text-sm' : 'text-2xl')}
+                >
+                    {data.hex}
+                </span>
+                <span
+                    className={twMerge(
+                        'block text-gray-500',
+                        size === 'md' ? 'text-xs' : 'text-md'
+                    )}
+                >
+                    {data.name}
+                </span>
             </div>
         </Link>
     )
@@ -41,7 +55,12 @@ const transitionProps = {
     leaveTo: 'opacity-0 translate-y-0.5',
 }
 
-export default function SearchInput() {
+interface SearchInputProps {
+    className?: string
+    size?: 'md' | 'xl'
+}
+
+export default function SearchInput({ className, size = 'md' }: SearchInputProps) {
     const router = useRouter()
     const [focused, setFocused] = useState<boolean>(false)
     const [showSuggestions, setShowSuggestions] = useState<boolean>(false)
@@ -107,7 +126,7 @@ export default function SearchInput() {
     }, [query, showColorPicker])
 
     return (
-        <div className='relative w-60'>
+        <div className={twMerge('relative', className)}>
             <form
                 className={twMerge(
                     'w-full inline-flex items-center justify-between p-2 rounded-2xl selection-none transition-all',
@@ -119,7 +138,7 @@ export default function SearchInput() {
                 <input
                     type='text'
                     placeholder='Pesquise uma cor'
-                    className='flex w-full outline-none'
+                    className={twMerge('flex w-full outline-none', size === 'xl' && 'text-3xl')}
                     onFocus={() => setFocused(true)}
                     onBlur={() => setFocused(false)}
                     onChange={(e) => {
@@ -135,7 +154,7 @@ export default function SearchInput() {
                         setShowSuggestions(false)
                     }}
                 >
-                    <EyedropperSample size={26} />
+                    <EyedropperSample size={size === 'md' ? 26 : 36} />
                 </button>
             </form>
             <Transition
@@ -144,16 +163,21 @@ export default function SearchInput() {
                 {...transitionProps}
             >
                 {suggestions.length ? (
-                    suggestions.map((suggestion) => <Suggestion data={suggestion} />)
+                    suggestions.map((suggestion) => <Suggestion data={suggestion} size={size} />)
                 ) : (
-                    <div className='p-2 text-center text-gray-400 text-md'>
+                    <div
+                        className={twMerge(
+                            'p-2 text-center text-gray-400',
+                            size === 'md' ? 'text-md' : 'text-xl'
+                        )}
+                    >
                         Nenhum resultado encontrado.
                     </div>
                 )}
             </Transition>
             <Transition
                 show={showColorPicker}
-                className='absolute z-30 left-0 mt-2 w-fit gap-2 bg-white border-2 rounded-xl border-zinc-300 p-4'
+                className='absolute z-30 right-0 mt-2 w-fit gap-2 bg-white border-2 rounded-xl border-zinc-300 p-4'
                 {...transitionProps}
                 id='color-picker'
             >

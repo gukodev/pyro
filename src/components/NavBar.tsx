@@ -41,6 +41,7 @@ export default function NavBar() {
                             </div>
                         </div>
                         <div className='flex flex-col gap-8 mt-8'>
+                            <SearchInput className='w-full' size='xl' />
                             <MobileNavLink href='/'>Início</MobileNavLink>
                             <MobileNavLink href='/paletas'>Paletas</MobileNavLink>
                             <MobileNavLink href='/random' legacy>
@@ -68,7 +69,7 @@ export default function NavBar() {
                             Cor aleatória
                         </Button>
                     </a>
-                    <SearchInput />
+                    <SearchInput className='w-60' />
                 </div>
                 <div className='flex md:hidden items-center gap-4'>
                     <Button onClick={() => setOpen(!open)}>
