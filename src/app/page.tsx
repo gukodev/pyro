@@ -77,8 +77,8 @@ export default async function Home() {
     return (
         <>
             <main className='mb-48'>
+                <NavBar />
                 <div className='w-full max-w-screen-lg mx-auto px-4'>
-                    <NavBar />
                     <div className='flex flex-col gap-8'>
                         <div className='flex items-center gap-4 justify-between md:justify-normal'>
                             <h1 className='text-4xl md:text-6xl font-bold'>Cor destaque</h1>

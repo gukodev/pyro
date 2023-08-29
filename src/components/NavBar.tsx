@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import { Fragment, useEffect, useState } from 'react'
 import Button from './Button'
 import { MobileNavLink } from './MobileNavLink'
+import SearchInput from './SearchInput'
 
 export default function NavBar() {
     const router = useRouter()
@@ -50,7 +51,7 @@ export default function NavBar() {
                     <div className='bg-black/90 w-screen h-screen absolute top-0 left-0 z-40' />
                 </div>
             </Transition>
-            <div className='py-6 border-b-4 border-slate-200 flex items-center justify-between mb-8'>
+            <div className='max-w-screen-lg mx-auto py-6 flex items-center justify-between border-b-4 border-slate-200 mb-8'>
                 <Link href='/' className='text-4xl font-bold select-none'>
                     🔥 pyro
                 </Link>
@@ -67,6 +68,7 @@ export default function NavBar() {
                             Cor aleatória
                         </Button>
                     </a>
+                    <SearchInput />
                 </div>
                 <div className='flex md:hidden items-center gap-4'>
                     <Button onClick={() => setOpen(!open)}>
