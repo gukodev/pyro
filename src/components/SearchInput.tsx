@@ -1,11 +1,13 @@
 'use client'
 
 import { ISuggestion } from '@/common/types'
+import { isValidColor, removeHash } from '@/util/colorFormat'
 import { formatQuery } from '@/util/format'
 import { Transition } from '@headlessui/react'
 import { EyedropperSample } from '@phosphor-icons/react'
 import axios from 'axios'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { HexColorPicker } from 'react-colorful'
 import { twMerge } from 'tailwind-merge'
@@ -40,6 +42,7 @@ const transitionProps = {
 }
 
 export default function SearchInput() {
+    const router = useRouter()
     const [focused, setFocused] = useState<boolean>(false)
     const [showSuggestions, setShowSuggestions] = useState<boolean>(false)
     const [showColorPicker, setShowColorPicker] = useState<boolean>(false)
@@ -48,6 +51,13 @@ export default function SearchInput() {
     const [query, setQuery] = useState<string>('')
 
     const _showSuggestions = showSuggestions && focused
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        if (!query) return
+        if (query.startsWith('#') && isValidColor(query))
+            router.push(`/${removeHash(query.toLowerCase())}`)
+    }
 
     useEffect(() => {
         const escListener = (e: KeyboardEvent) => {
@@ -98,12 +108,13 @@ export default function SearchInput() {
 
     return (
         <div className='relative w-60'>
-            <div
+            <form
                 className={twMerge(
                     'w-full inline-flex items-center justify-between p-2 rounded-2xl selection-none transition-all',
                     'border-2 border-red-500 bg-white text-black',
                     focused ? 'ring-2 ring-red-300/50' : 'ring-0'
                 )}
+                onSubmit={handleSubmit}
             >
                 <input
                     type='text'
@@ -117,6 +128,7 @@ export default function SearchInput() {
                     value={query}
                 />
                 <button
+                    type='button'
                     className='transition-opacity hover:opacity-50 focus:opacity-50 outline-none'
                     onClick={() => {
                         setShowColorPicker((prev) => !prev)
@@ -125,7 +137,7 @@ export default function SearchInput() {
                 >
                     <EyedropperSample size={26} />
                 </button>
-            </div>
+            </form>
             <Transition
                 show={_showSuggestions}
                 className='absolute z-30 left-0 mt-2 w-full flex flex-col gap-2 bg-white border-2 rounded-lg border-zinc-300 overflow-hidden'
