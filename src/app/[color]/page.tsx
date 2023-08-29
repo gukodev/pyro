@@ -73,8 +73,8 @@ export default async function ColorPage({ params }: ColorPageProps) {
         <>
             <main className='mb-48'>
                 <RegenerateColorMobileButton />
+                <NavBar />
                 <div className='w-full max-w-screen-lg mx-auto px-4'>
-                    <NavBar />
                     <div className='flex flex-col gap-8'>
                         <ColorCard data={data} />
                         <ColorDetails data={data} />
