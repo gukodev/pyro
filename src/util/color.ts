@@ -1,5 +1,5 @@
 import { ISuggestion } from '@/common/types'
-import { removeHash } from '@/util/colorFormat'
+import { isValidColor, removeHash } from '@/util/colorFormat'
 import { differenceCiede2000, hsl, hsv, nearest, rgb } from 'culori'
 import fs from 'fs'
 import path from 'path'
@@ -226,16 +226,6 @@ export function getDailyColor(): ColorInfo {
     return data.info
 }
 
-export function hexExists(hex: string): boolean {
-    // check if hex exists trying to parse the rgb value
-    try {
-        rgb(hex)
-        return true
-    } catch (err) {
-        return false
-    }
-}
-
 export function getSuggestions(query: string, size: number = 5): ISuggestion[] {
     if (!query) return []
 
@@ -276,7 +266,7 @@ export function getSuggestions(query: string, size: number = 5): ISuggestion[] {
         return 0
     })
 
-    if (isHexQuery && suggestions.length === 0 && hexExists(lowerQuery)) {
+    if (isHexQuery && suggestions.length === 0 && isValidColor(lowerQuery)) {
         return [
             {
                 name: getColorName(lowerQuery),
