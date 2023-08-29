@@ -1,16 +1,13 @@
 'use client'
 
+import { ISuggestion } from '@/common/types'
+import { formatQuery } from '@/util/format'
 import { Transition } from '@headlessui/react'
 import { EyedropperSample } from '@phosphor-icons/react'
+import axios from 'axios'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
-
-interface ISuggestion {
-    name: string
-    hex: string
-    href: string
-}
 
 export function Suggestion({ data }: { data: ISuggestion }) {
     return (
@@ -32,11 +29,6 @@ export function Suggestion({ data }: { data: ISuggestion }) {
     )
 }
 
-const formatQuery = (query: string) => {
-    query = query.trim().replace(/\s+/g, ' ')
-    return query
-}
-
 export default function SearchInput() {
     const [focused, setFocused] = useState<boolean>(false)
     const [showSuggestions, setShowSuggestions] = useState<boolean>(false)
@@ -53,12 +45,23 @@ export default function SearchInput() {
 
     useEffect(() => {
         const formattedQuery = formatQuery(query)
-        if (formattedQuery.length > 3) {
-            setShowSuggestions(true)
-            return
-        }
+        if (!formattedQuery) return setShowSuggestions(false)
 
-        setShowSuggestions(false)
+        const encoded = encodeURIComponent(formattedQuery)
+
+        axios
+            .get(`/api/suggestions/${encoded}`)
+            .then((res) => {
+                const { data } = res
+                if (!data.suggestions) return
+                setSuggestions(data.suggestions)
+            })
+            .catch()
+            .finally(() => {
+                setShowSuggestions(true)
+            })
+
+        return
     }, [query])
 
     return (
@@ -86,7 +89,7 @@ export default function SearchInput() {
                 </button>
             </div>
             <Transition
-                className='absolute left-0 mt-2 w-full flex flex-col gap-2 bg-white border-2 rounded-lg border-zinc-300 overflow-hidden'
+                className='absolute z-30 left-0 mt-2 w-full flex flex-col gap-2 bg-white border-2 rounded-lg border-zinc-300 overflow-hidden'
                 show={_showSuggestions}
                 enter='transition ease-out duration-200'
                 enterFrom='opacity-0 translate-y-0.5'

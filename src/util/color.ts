@@ -1,3 +1,5 @@
+import { ISuggestion } from '@/common/types'
+import { removeHash } from '@/util/colorFormat'
 import { differenceCiede2000, hsl, hsv, nearest, rgb } from 'culori'
 import fs from 'fs'
 import path from 'path'
@@ -222,6 +224,69 @@ export function getDailyColor(): ColorInfo {
     }
 
     return data.info
+}
+
+export function hexExists(hex: string): boolean {
+    // check if hex exists trying to parse the rgb value
+    try {
+        rgb(hex)
+        return true
+    } catch (err) {
+        return false
+    }
+}
+
+export function getSuggestions(query: string, size: number = 5): ISuggestion[] {
+    if (!query) return []
+
+    const colorNamesMap = getColorNames()
+    const hexes = Object.keys(colorNamesMap)
+    const suggestions: ISuggestion[] = []
+
+    const lowerQuery = query.toLowerCase()
+    const isHexQuery = lowerQuery.startsWith('#')
+    const normalizedQuery = removeHash(lowerQuery)
+
+    for (const hex of hexes) {
+        if (
+            (isHexQuery && hex.startsWith(normalizedQuery)) ||
+            (!isHexQuery && colorNamesMap[hex].toLowerCase().includes(lowerQuery))
+        ) {
+            suggestions.push({
+                name: colorNamesMap[hex],
+                hex: addHash(hex),
+                href: `/${removeHash(hex)}`,
+            })
+
+            if (suggestions.length === size) break
+        }
+    }
+
+    // Sort by name
+    suggestions.sort((a, b) => {
+        const aNameStartsWithQuery = a.name.toLowerCase().startsWith(lowerQuery)
+        const bNameStartsWithQuery = b.name.toLowerCase().startsWith(lowerQuery)
+
+        if (aNameStartsWithQuery && !bNameStartsWithQuery) {
+            return -1
+        } else if (!aNameStartsWithQuery && bNameStartsWithQuery) {
+            return 1
+        }
+
+        return 0
+    })
+
+    if (isHexQuery && suggestions.length === 0 && hexExists(lowerQuery)) {
+        return [
+            {
+                name: getColorName(lowerQuery),
+                hex: lowerQuery,
+                href: `/${normalizedQuery}`,
+            },
+        ]
+    }
+
+    return suggestions
 }
 
 // function getDarkColors(length: number = 1000) {
