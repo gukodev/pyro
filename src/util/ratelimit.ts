@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { NextRequest, NextResponse } from 'next/server'
 
 export interface RateLimit {
@@ -23,17 +24,14 @@ type RateLimitMap = Map<string, RateLimit>
 
 const getIp = (req: NextRequest) => {
     const ip =
-        req.headers.get('cf-connecting-ip') ||
-        req.headers.get('x-forwarded-for') ||
         req.headers.get('x-real-ip') ||
+        req.headers.get('x-forwarded-for') ||
+        req.headers.get('cf-connecting-ip') ||
         req.headers.get('x-client-ip') ||
         req.headers.get('x-cluster-client-ip') ||
         req.headers.get('x-forwarded') ||
         req.headers.get('forwarded-for') ||
         req.headers.get('forwarded')
-    const hedars = req.headers.entries()
-    console.log('[getIp]', ip)
-    console.log(Object.fromEntries(hedars))
     return ip
 }
 
@@ -63,15 +61,23 @@ export const hasRateLimit = (
             ),
         ]
 
-    const rateLimit = rateLimitMap.get(ip)
-    console.log(`[rate-limit] has rate limit obj: ${!!rateLimit}`)
+    const rateLimitObj = rateLimitMap.get(ip)
+    console.log(`[rate-limit] has rate limit obj: ${!!rateLimitObj}`)
 
-    if (rateLimit) {
-        const rateLimited = rateLimit.lastRequest + rateLimitOptions.interval > Date.now()
+    if (rateLimitObj) {
+        const now = Date.now()
+        const rateLimited = rateLimitObj.lastRequest + rateLimitOptions.interval > now
+        const wait = rateLimitObj.lastRequest + rateLimitOptions.interval - now
 
-        if (rateLimit.tooManyRequests) {
+        const formatted = dayjs(wait).format('mm:ss')
+
+        console.log(`[rate-limit] rate limited: ${rateLimited}`)
+        console.log(`[rate-limit] wait: ${formatted}`)
+
+        if (rateLimitObj.tooManyRequests) {
             const rateLimitedTooManyRequests =
-                rateLimit.lastRequest + rateLimitOptions.maxRequestsInterval > Date.now()
+                rateLimitObj.lastRequest + rateLimitOptions.maxRequestsInterval > Date.now()
+
             if (rateLimitedTooManyRequests) {
                 console.log(`[rate-limit] rate limited too many requests`)
                 return [
@@ -87,17 +93,17 @@ export const hasRateLimit = (
                 ]
             }
 
-            rateLimit.tooManyRequests = false
-            rateLimit.lastRequest = Date.now()
-            rateLimit.requests = 1
+            rateLimitObj.tooManyRequests = false
+            rateLimitObj.lastRequest = Date.now()
+            rateLimitObj.requests = 1
         } else {
             if (rateLimited) {
                 console.log(`[rate-limit] rate limited`)
-                rateLimit.requests = rateLimit.requests ? rateLimit.requests + 1 : 1
+                rateLimitObj.requests = rateLimitObj.requests ? rateLimitObj.requests + 1 : 1
 
-                if (rateLimit.requests > rateLimitOptions.maxRequests) {
-                    rateLimit.tooManyRequests = true
-                    rateLimit.lastRequest = Date.now()
+                if (rateLimitObj.requests > rateLimitOptions.maxRequests) {
+                    rateLimitObj.tooManyRequests = true
+                    rateLimitObj.lastRequest = Date.now()
                     return [
                         true,
                         NextResponse.json(
@@ -125,8 +131,8 @@ export const hasRateLimit = (
             }
 
             console.log(`[rate-limit] not rate limited`)
-            rateLimit.lastRequest = Date.now()
-            rateLimit.requests = 1
+            rateLimitObj.lastRequest = Date.now()
+            rateLimitObj.requests = 1
         }
 
         return [false, null]
