@@ -7,6 +7,7 @@ import { EyedropperSample } from '@phosphor-icons/react'
 import axios from 'axios'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import { HexColorPicker } from 'react-colorful'
 import { twMerge } from 'tailwind-merge'
 
 export function Suggestion({ data }: { data: ISuggestion }) {
@@ -29,21 +30,52 @@ export function Suggestion({ data }: { data: ISuggestion }) {
     )
 }
 
+const transitionProps = {
+    enter: 'transition ease-out duration-200',
+    enterFrom: 'opacity-0 translate-y-0.5',
+    enterTo: 'opacity-100 translate-y-0',
+    leave: 'transition ease-in duration-100',
+    leaveFrom: 'opacity-100 translate-y-0',
+    leaveTo: 'opacity-0 translate-y-0.5',
+}
+
 export default function SearchInput() {
     const [focused, setFocused] = useState<boolean>(false)
     const [showSuggestions, setShowSuggestions] = useState<boolean>(false)
-    const [suggestions, setSuggestions] = useState<ISuggestion[]>([
-        // {
-        //     name: 'Vermelho',
-        //     hex: '#FF0000',
-        //     href: '/ff0000',
-        // },
-    ])
+    const [showColorPicker, setShowColorPicker] = useState<boolean>(false)
+
+    const [suggestions, setSuggestions] = useState<ISuggestion[]>([])
     const [query, setQuery] = useState<string>('')
 
     const _showSuggestions = showSuggestions && focused
 
     useEffect(() => {
+        const escListener = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                setShowColorPicker(false)
+                setShowSuggestions(false)
+            }
+        }
+
+        const clickOutsideColorPickerListener = (e: MouseEvent) => {
+            if (e.target instanceof HTMLElement && !e.target.closest('#color-picker')) {
+                setShowColorPicker(false)
+            }
+        }
+
+        document.addEventListener('keydown', escListener)
+        document.addEventListener('click', clickOutsideColorPickerListener)
+
+        return () => {
+            document.removeEventListener('keydown', escListener)
+            document.removeEventListener('click', clickOutsideColorPickerListener)
+        }
+    }, [])
+
+    useEffect(() => {
+        if (focused) setShowColorPicker(false)
+        if (showColorPicker) return
+
         const formattedQuery = formatQuery(query)
         if (!formattedQuery) return setShowSuggestions(false)
 
@@ -62,7 +94,7 @@ export default function SearchInput() {
             })
 
         return
-    }, [query])
+    }, [query, showColorPicker])
 
     return (
         <div className='relative w-60'>
@@ -84,27 +116,39 @@ export default function SearchInput() {
                     }}
                     value={query}
                 />
-                <button className='transition-opacity hover:opacity-50 focus:opacity-50 outline-none'>
+                <button
+                    className='transition-opacity hover:opacity-50 focus:opacity-50 outline-none'
+                    onClick={() => {
+                        setShowColorPicker((prev) => !prev)
+                        setShowSuggestions(false)
+                    }}
+                >
                     <EyedropperSample size={26} />
                 </button>
             </div>
             <Transition
-                className='absolute z-30 left-0 mt-2 w-full flex flex-col gap-2 bg-white border-2 rounded-lg border-zinc-300 overflow-hidden'
                 show={_showSuggestions}
-                enter='transition ease-out duration-200'
-                enterFrom='opacity-0 translate-y-0.5'
-                enterTo='opacity-100 translate-y-0'
-                leave='transition ease-in duration-75'
-                leaveFrom='opacity-100 translate-y-0'
-                leaveTo='opacity-0 translate-y-0.5'
+                className='absolute z-30 left-0 mt-2 w-full flex flex-col gap-2 bg-white border-2 rounded-lg border-zinc-300 overflow-hidden'
+                {...transitionProps}
             >
                 {suggestions.length ? (
-                    suggestions.map((suggestion, index) => <Suggestion data={suggestion} />)
+                    suggestions.map((suggestion) => <Suggestion data={suggestion} />)
                 ) : (
                     <div className='p-2 text-center text-gray-400 text-md'>
                         Nenhum resultado encontrado.
                     </div>
                 )}
+            </Transition>
+            <Transition
+                show={showColorPicker}
+                className='absolute z-30 left-0 mt-2 w-fit gap-2 bg-white border-2 rounded-xl border-zinc-300 p-4'
+                {...transitionProps}
+                id='color-picker'
+            >
+                <HexColorPicker
+                    color={query.startsWith('#') ? query : '#fff'}
+                    onChange={setQuery}
+                />
             </Transition>
         </div>
     )
