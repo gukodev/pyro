@@ -51,7 +51,7 @@ export default function NavBar() {
                     <div className='bg-black/90 w-screen h-screen absolute top-0 left-0 z-40' />
                 </div>
             </Transition>
-            <div className='max-w-screen-lg mx-auto py-6 flex items-center justify-between border-b-4 border-slate-200 mb-8'>
+            <div className='max-w-screen-lg mx-auto py-6 px-2 flex items-center justify-between border-b-4 border-slate-200 mb-8'>
                 <Link href='/' className='text-4xl font-bold select-none'>
                     🔥 pyro
                 </Link>
