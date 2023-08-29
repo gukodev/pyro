@@ -129,10 +129,10 @@ export function getColorInfo(hex: string): ColorInfo {
     const colors = Object.keys(rawColors)
     const getNearestColors = nearest(colors, differenceCiede2000())
 
-    const nearestColors = getNearestColors(hex, 500)
+    const nearestColors = getNearestColors(hex, 250)
     const cNearest = nearestColors[0]
 
-    const related = nearestColors.slice(-20).map((color) => addHash(color))
+    const related = nearestColors.slice(-30).map((color) => addHash(color))
 
     const _rgb = rgb(hex) as RGB
     const rgbFormatted = formatRGB(_rgb)
