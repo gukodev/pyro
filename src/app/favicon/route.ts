@@ -1,10 +1,10 @@
 import { sanitizeColor } from '@/util/colorFormat'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
 export const runtime = 'edge'
 
-export async function GET(request: Request) {
-    const { searchParams } = new URL(request.url)
+export async function GET(req: NextRequest) {
+    const { searchParams } = new URL(req.url)
     const hex = sanitizeColor(searchParams.get('hex') || 'ef4444')
 
     const svgMarkup = `
