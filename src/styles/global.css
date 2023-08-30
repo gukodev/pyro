@@ -35,3 +35,11 @@
 .heart-pulse {
     animation: pulse 1.25s infinite ease-in-out;
 }
+
+.ease-bounce-in {
+    transition-timing-function: cubic-bezier(0.31, 0.99, 0.74, 1.14);
+}
+
+.ease-bounce-out {
+    transition-timing-function: cubic-bezier(0.17, -0.3, 0.86, 0.43);
+}

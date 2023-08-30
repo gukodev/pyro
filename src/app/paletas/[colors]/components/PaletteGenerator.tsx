@@ -4,6 +4,7 @@ import PaletteNavBar from '@/components/PaletteNavBar'
 import { removeHash } from '@/util/colorFormat'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
+import Advice from './Advice'
 import Colors from './Colors'
 import ShortcutHandler from './ShortcutHandler'
 
@@ -43,6 +44,7 @@ export default function PaletteGenerator({
 }: PaletteGeneratorProps) {
     const [colors, setColors] = useState<string[]>(colorsParam)
     const [loading, setLoading] = useState<boolean>(false)
+    const [showAdvice, setShowAdvice] = useState<boolean>(true)
 
     const handleSetPalette = (colors: string[]) => {
         setColors(colors)
@@ -56,6 +58,7 @@ export default function PaletteGenerator({
     const generateNewPalette = () => {
         if (loading) return
         setLoading(true)
+        if (showAdvice) setShowAdvice(false)
 
         const length = colors.length
         axios
@@ -87,6 +90,7 @@ export default function PaletteGenerator({
     return (
         <>
             <PaletteNavBar onRegenerate={() => generateNewPalette()} />
+            <Advice show={showAdvice} onClose={() => setShowAdvice(false)} />
             <div className='flex items-center w-full h-full'>
                 <Colors colors={colors} />
             </div>
