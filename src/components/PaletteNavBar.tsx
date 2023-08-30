@@ -16,12 +16,12 @@ export default function PaletteNavBar({ onRegenerate }: PaletteNavBarProps) {
                     🔥 pyro
                 </Link>
                 <div className='flex items-center justify-center gap-4'>
-                    <Button>
+                    <Button onClick={onRegenerate}>
                         <ArrowsCounterClockwise size={22} weight='bold' />
                         Regenerar
                     </Button>
                     <Link href='/'>
-                        <Button onClick={onRegenerate} ghost>
+                        <Button ghost>
                             <House size={22} weight='bold' />
                         </Button>
                     </Link>
