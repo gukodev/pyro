@@ -4,10 +4,9 @@ import { useEffect } from 'react'
 
 interface ShortcutHandlerProps {
     onNewPalette: () => void
-    length: number
 }
 
-export default function ShortcutHandler({ onNewPalette, length }: ShortcutHandlerProps) {
+export default function ShortcutHandler({ onNewPalette }: ShortcutHandlerProps) {
     useEffect(() => {
         const listener = (e: KeyboardEvent) => {
             if (e.code === 'Space') onNewPalette()

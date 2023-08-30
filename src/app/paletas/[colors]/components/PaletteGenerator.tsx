@@ -55,6 +55,12 @@ export default function PaletteGenerator({
         )
     }
 
+    const handleCopyColor = (hex: string) => {
+        navigator.clipboard.writeText(hex).then(() => {
+            alert('Copiado!')
+        })
+    }
+
     const generateNewPalette = () => {
         if (loading) return
         setLoading(true)
@@ -92,9 +98,9 @@ export default function PaletteGenerator({
             <PaletteNavBar onRegenerate={() => generateNewPalette()} />
             <Advice show={showAdvice} onClose={() => setShowAdvice(false)} />
             <div className='flex items-center w-full h-full'>
-                <Colors colors={colors} />
+                <Colors colors={colors} onCopy={handleCopyColor} />
             </div>
-            <ShortcutHandler onNewPalette={() => generateNewPalette()} length={length} />
+            <ShortcutHandler onNewPalette={() => generateNewPalette()} />
         </>
     )
 }
