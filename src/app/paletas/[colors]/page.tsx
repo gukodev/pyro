@@ -45,10 +45,8 @@ export default function Page(ctx: Context) {
     faviconColor = colors[0]
 
     return (
-        <>
-            <main className='w-screen h-screen'>
-                <PaletteGenerator colors={colors} validParam={validParam} />
-            </main>
-        </>
+        <main className='w-screen h-screen'>
+            <PaletteGenerator colors={colors} validParam={validParam} />
+        </main>
     )
 }
