@@ -141,21 +141,38 @@ export function generateAll(color: string, length?: number): Palettes {
     }
 }
 
-export function randomPalette(length: number = 5) {
+interface RandomPaletteReturn {
+    colors: string[]
+    type: string
+}
+
+export function randomPalette(length: number = 5): RandomPaletteReturn {
     const color = getRandomColor()
-    const type = choose(['tints', 'shades', 'analogous', 'random'])
+
+    const options = ['tints', 'shades', 'analogous', 'random']
+    type Options = 'tints' | 'shades' | 'analogous' | 'random'
 
     const HSV = hsv(color) as Hsv
+    const type = choose(options) as Options
 
     switch (type) {
         case 'tints':
-            return tints(HSV, length)
+            return { colors: tints(HSV, length), type }
         case 'shades':
-            return shades(HSV, length)
+            return { colors: shades(HSV, length), type }
         case 'analogous':
-            return analogous(HSV, length)
+            return { colors: analogous(HSV, length), type }
         case 'random':
-            const randomAngle = choose([60, 90, 120])
-            return analogous(HSV, length, randomAngle)
+            let colors: string[] = []
+            let i = 0
+            while (colors.length < length) {
+                const addColor = getRandomColor()
+                if (!colors.includes(addColor)) colors.push(addColor)
+                else {
+                    i += 1
+                    console.log('Duplicate color', i)
+                }
+            }
+            return { colors, type }
     }
 }

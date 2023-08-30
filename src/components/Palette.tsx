@@ -2,13 +2,13 @@ import { removeHash } from '@/util/colorFormat'
 import Link from 'next/link'
 import { twMerge } from 'tailwind-merge'
 
-interface PalleteProps {
+interface PaletteProps {
     colors: string[]
     linkColors?: boolean
     size?: 'sm' | 'md' | 'lg'
 }
 
-export default function Palette({ colors, linkColors = false, size = 'md' }: PalleteProps) {
+export default function Palette({ colors, linkColors = false, size = 'md' }: PaletteProps) {
     const height = size === 'sm' ? 64 : size === 'md' ? 96 : 128
 
     const commonStyles = (color: string, index: number, button?: boolean) => {
