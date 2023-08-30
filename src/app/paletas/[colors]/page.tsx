@@ -1,7 +1,7 @@
 import { addHash, isValidColor, removeHash } from '@/util/colorFormat'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
-import Colors from './components/Colors'
+import PaletteGenerator from './components/PaletteGenerator'
 
 interface Context {
     params: {
@@ -47,9 +47,7 @@ export default function Page(ctx: Context) {
     return (
         <>
             <main className='w-screen h-screen'>
-                <div className='flex items-center w-full h-full'>
-                    <Colors colors={colors} length={colors.length} validParam={validParam} />
-                </div>
+                <PaletteGenerator colors={colors} validParam={validParam} />
             </main>
         </>
     )
