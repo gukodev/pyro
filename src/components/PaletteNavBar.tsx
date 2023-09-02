@@ -11,14 +11,14 @@ interface PaletteNavBarProps {
 export default function PaletteNavBar({ onRegenerate }: PaletteNavBarProps) {
     return (
         <nav className='w-screen absolute top-0 left-0 z-30 flex items-center justify-center px-4'>
-            <div className='max-w-screen-lg w-full bg-zinc-50 border-x-2 border-b-2 rounded-b-3xl border-zinc-200 p-4 flex items-center justify-between'>
-                <Link href='/' className='text-4xl font-bold select-none'>
+            <div className='max-w-screen-lg w-full bg-zinc-50 border-x-2 border-b-2 rounded-b-3xl border-zinc-200 flex items-center justify-between xl:p-4 p-2'>
+                <Link href='/' className='xl:text-4xl text-3xl font-bold select-none'>
                     🔥 pyro
                 </Link>
                 <div className='flex items-center justify-center gap-4'>
                     <Button onClick={onRegenerate}>
                         <ArrowsCounterClockwise size={22} weight='bold' />
-                        Regenerar
+                        <span className='xl:inline hidden'>Regenerar</span>
                     </Button>
                     <Link href='/'>
                         <Button ghost>
