@@ -4,7 +4,6 @@ import { HexAndName } from '@/common/types'
 import PaletteNavBar from '@/components/PaletteNavBar'
 import { removeHash } from '@/util/colorFormat'
 import axios from 'axios'
-import isMobile from 'is-mobile'
 import { useEffect, useState } from 'react'
 import Advice from './Advice'
 import Colors from './Colors'
@@ -98,7 +97,7 @@ export default function PaletteGenerator({
     return (
         <>
             <PaletteNavBar onRegenerate={() => generateNewPalette()} />
-            {!isMobile && <Advice show={showAdvice} onClose={() => setShowAdvice(false)} />}
+            <Advice show={showAdvice} onClose={() => setShowAdvice(false)} />
             <Colors colors={colors} onCopy={handleCopyColor} loading={loading} />
             <ShortcutHandler onNewPalette={() => generateNewPalette()} />
         </>

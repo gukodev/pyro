@@ -19,7 +19,7 @@ export default function Advice({ show, onClose }: AdviceProps) {
             leaveTo='scale-0 opacity-0'
             onClick={onClose}
             className={twMerge(
-                'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg p-4',
+                'xl:block hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg p-4',
                 'text-zinc-900 bg-zinc-50 border-2 border-zinc-200'
             )}
             as='button'
