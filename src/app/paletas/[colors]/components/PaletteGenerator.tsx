@@ -5,6 +5,7 @@ import PaletteNavBar from '@/components/PaletteNavBar'
 import { removeHash } from '@/util/colorFormat'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
+import { twMerge } from 'tailwind-merge'
 import Advice from './Advice'
 import Colors from './Colors'
 import ShortcutHandler from './ShortcutHandler'
@@ -98,7 +99,12 @@ export default function PaletteGenerator({
         <>
             <PaletteNavBar onRegenerate={() => generateNewPalette()} />
             <Advice show={showAdvice} onClose={() => setShowAdvice(false)} />
-            <div className='flex items-center w-full h-full'>
+            <div
+                className={twMerge(
+                    'flex items-center w-full h-full transition-opacity duration-500',
+                    loading ? 'opacity-75' : 'opacity-100'
+                )}
+            >
                 <Colors colors={colors} onCopy={handleCopyColor} />
             </div>
             <ShortcutHandler onNewPalette={() => generateNewPalette()} />
