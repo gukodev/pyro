@@ -3,3 +3,8 @@ export interface ISuggestion {
     hex: string
     href: string
 }
+
+export interface HexAndName {
+    hex: string
+    name: string
+}

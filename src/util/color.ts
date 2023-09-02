@@ -102,6 +102,19 @@ export function getColorName(hex: string): string {
     return name
 }
 
+export function getNearestColorName(hex: string): string {
+    const colorNames = getColorNames()
+    if (colorNames[hex]) return colorNames[hex]
+
+    const colors = Object.keys(colorNames)
+    const getNearestColors = nearest(colors, differenceCiede2000())
+
+    const nearestColors = getNearestColors(hex, 250)
+    const cNearest = nearestColors[0]
+
+    return colorNames[cNearest]
+}
+
 export function getRandomNamedColorHex(): string {
     const colorNames = Object.keys(getColorNames())
     const rndIndex = Math.floor(Math.random() * colorNames.length)

@@ -1,42 +1,12 @@
 'use client'
 
-import { addHash } from '@/util/colorFormat'
-import { wcagContrast } from 'culori'
-import { twMerge } from 'tailwind-merge'
+import { HexAndName } from '@/common/types'
+import { removeHash } from '@/util/colorFormat'
+import Color from './Color'
 
 interface ColorsProps {
-    colors: string[]
+    colors: HexAndName[]
     onCopy: (hex: string) => void
-}
-
-interface ColorProps {
-    hex: string
-    name: string
-    href: string
-    onCopy: (hex: string) => void
-}
-
-function Color({ hex, name, href, onCopy }: ColorProps) {
-    const hexWithHash = addHash(hex)
-    const contrast = wcagContrast(hexWithHash, '#fff')
-
-    const textColor = contrast > 3 ? 'text-white' : 'text-black'
-
-    return (
-        <div className='w-full h-full flex p-16' style={{ backgroundColor: hex }}>
-            <div className={twMerge('flex flex-col gap-2 mt-auto', textColor)}>
-                <div>
-                    <h1
-                        className='text-2xl font-bold opacity-90 border-none focus:outline-none block bg-transparent transition-opacity hover:opacity-50 cursor-pointer'
-                        onClick={() => onCopy(hexWithHash)}
-                    >
-                        {hexWithHash}
-                    </h1>
-                    <span className='opacity-50 select-none'>{name}</span>
-                </div>
-            </div>
-        </div>
-    )
 }
 
 export default function Colors({ colors, onCopy }: ColorsProps) {
@@ -45,9 +15,9 @@ export default function Colors({ colors, onCopy }: ColorsProps) {
             {colors.map((color, i) => (
                 <Color
                     key={`${color}-${i}`}
-                    hex={color}
-                    name={color}
-                    href={`/paletas/${color}`}
+                    hex={color.hex}
+                    name={color.name}
+                    href={`/paletas/${removeHash(color.hex)}`}
                     onCopy={onCopy}
                 />
             ))}

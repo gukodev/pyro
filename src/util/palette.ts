@@ -1,4 +1,6 @@
+import { HexAndName } from '@/common/types'
 import { Color, Hsv, formatHex, hsv } from 'culori'
+import { getNearestColorName, getRandomNamedColor } from './color'
 import { choose, getRandomColor } from './random'
 
 export interface Palettes {
@@ -142,7 +144,7 @@ export function generateAll(color: string, length?: number): Palettes {
 }
 
 interface RandomPaletteReturn {
-    colors: string[]
+    colors: HexAndName[]
     type: string
 }
 
@@ -155,24 +157,39 @@ export function randomPalette(length: number = 5): RandomPaletteReturn {
     const HSV = hsv(color) as Hsv
     const type = choose(options) as Options
 
+    let colors: string[] = []
     switch (type) {
         case 'tints':
-            return { colors: tints(HSV, length), type }
+            colors = tints(HSV, length)
+            break
         case 'shades':
-            return { colors: shades(HSV, length), type }
+            colors = shades(HSV, length)
+            break
         case 'analogous':
-            return { colors: analogous(HSV, length), type }
+            colors = analogous(HSV, length)
+            break
         case 'random':
-            let colors: string[] = []
-            let i = 0
-            while (colors.length < length) {
-                const addColor = getRandomColor()
-                if (!colors.includes(addColor)) colors.push(addColor)
-                else {
-                    i += 1
-                    console.log('Duplicate color', i)
-                }
+            let _colors: HexAndName[] = []
+            while (_colors.length < length) {
+                const addColor = getRandomNamedColor()
+                if (!colors.filter((x) => x === addColor.hex).length)
+                    _colors.push({
+                        hex: addColor.hex,
+                        name: addColor.name,
+                    })
             }
-            return { colors, type }
+
+            return {
+                type: 'random',
+                colors: _colors,
+            }
+    }
+
+    return {
+        type,
+        colors: colors.map((x) => ({
+            hex: x,
+            name: getNearestColorName(x),
+        })),
     }
 }
