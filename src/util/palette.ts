@@ -1,7 +1,7 @@
 import { HexAndName } from '@/common/types'
 import { Color, Hsv, formatHex, hsv } from 'culori'
 import { getNearestColorName, getRandomNamedColor } from './color'
-import { choose, getRandomColor } from './random'
+import { chooseWeighted, getRandomColor } from './random'
 
 export interface Palettes {
     theory: {
@@ -150,12 +150,19 @@ interface RandomPaletteReturn {
 
 export function randomPalette(length: number = 5): RandomPaletteReturn {
     const color = getRandomColor()
-
-    const options = ['tints', 'shades', 'analogous', 'random']
-    type Options = 'tints' | 'shades' | 'analogous' | 'random'
-
     const HSV = hsv(color) as Hsv
-    const type = choose(options) as Options
+
+    type Options = 'tints' | 'shades' | 'analogous' | 'random'
+    const options: Options[] = ['tints', 'shades', 'analogous', 'random']
+
+    const weights = {
+        tints: 0.1,
+        shades: 0.1,
+        analogous: 0.2,
+        random: 0.6,
+    }
+
+    const type = chooseWeighted<Options>(options, weights)
 
     let colors: string[] = []
     switch (type) {
