@@ -17,7 +17,7 @@ export default function Colors({ colors, onCopy }: ColorsProps) {
                     key={`${color}-${i}`}
                     hex={color.hex}
                     name={color.name}
-                    href={`/paletas/${removeHash(color.hex)}`}
+                    href={`/${removeHash(color.hex)}`}
                     onCopy={onCopy}
                 />
             ))}
