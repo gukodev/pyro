@@ -1,7 +1,7 @@
 'use client'
 
 import { ColorInfo } from '@/util/color'
-import { removeHash } from '@/util/colorFormat'
+import { getPredominantColors, removeHash } from '@/util/colorFormat'
 import { wcagContrast } from 'culori'
 import Link from 'next/link'
 import { twMerge } from 'tailwind-merge'
@@ -18,8 +18,7 @@ export default function ColorCard({ data }: ColorCardProps) {
     const textColor = theme === 'dark' ? 'text-black/90' : 'text-white/90'
 
     const { r, g, b } = data.percent
-    const predominant =
-        r > g && r > b ? 'vermelha' : g > r && g > b ? 'verde' : b > r && b > g ? 'azul' : null
+    const predominant = getPredominantColors([r, g, b])
 
     return (
         <div
