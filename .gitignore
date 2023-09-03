@@ -34,7 +34,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# cache
+# custom
 .cache
-
 IDEIAS.md
+sitemaps.rar
