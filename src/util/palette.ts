@@ -1,6 +1,6 @@
 import { HexAndName } from '@/common/types'
 import { Color, Hsv, formatHex, hsv } from 'culori'
-import { getNearestColorName, getRandomNamedColor } from './color'
+import { getNearestColorName, getRandomUniqueNamedColorsHex } from './color'
 import { chooseWeighted, getRandomColor } from './random'
 
 export interface Palettes {
@@ -163,37 +163,28 @@ export function randomPalette(length: number = 5): RandomPaletteReturn {
 
     const type = chooseWeighted<Options>(options, weights)
 
-    let colors: string[] = []
-    switch (type) {
-        case 'tints':
-            colors = tints(HSV, length)
-            break
-        case 'shades':
-            colors = shades(HSV, length)
-            break
-        case 'random':
-            let _colors: HexAndName[] = []
-
-            while (_colors.length < length) {
-                const addColor = getRandomNamedColor()
-                if (!_colors.filter((x) => x.hex === addColor.hex).length)
-                    _colors.push({
-                        hex: addColor.hex,
-                        name: addColor.name,
-                    })
-            }
-
-            return {
-                type: 'random',
-                colors: _colors,
-            }
-    }
-
-    return {
-        type,
-        colors: colors.map((x) => ({
+    const mapColors = (colors: string[]) => {
+        return colors.map((x) => ({
             hex: x,
             name: getNearestColorName(x),
-        })),
+        }))
+    }
+
+    switch (type) {
+        case 'tints':
+            return {
+                type,
+                colors: mapColors(tints(HSV, length)),
+            }
+        case 'shades':
+            return {
+                type,
+                colors: mapColors(shades(HSV, length)),
+            }
+        case 'random':
+            return {
+                type,
+                colors: mapColors(getRandomUniqueNamedColorsHex(length)),
+            }
     }
 }

@@ -130,6 +130,19 @@ export function getRandomNamedColor(): ColorInfo {
     return getColorInfo(hex)
 }
 
+// Generates a list of unique random named colors and return its hex values
+export function getRandomUniqueNamedColorsHex(length: number): string[] {
+    let colors: string[] = []
+
+    while (colors.length < length) {
+        const generatedHex = getRandomNamedColorHex()
+        const hasInTheList = colors.filter((x) => x === generatedHex).length
+        if (!hasInTheList) colors.push(generatedHex)
+    }
+
+    return colors
+}
+
 // Generates a random hex color value
 export function getRandomColor(): string {
     const randomColor = Math.floor(Math.random() * 16777215).toString(16)
