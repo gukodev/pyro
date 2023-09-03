@@ -9,6 +9,7 @@ interface ShortcutHandlerProps {
 export default function ShortcutHandler({ onNewPalette }: ShortcutHandlerProps) {
     useEffect(() => {
         const listener = (e: KeyboardEvent) => {
+            e.preventDefault()
             if (e.code === 'Space') onNewPalette()
         }
 
