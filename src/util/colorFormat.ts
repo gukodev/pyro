@@ -42,20 +42,20 @@ export function getFullLengthHex(hex: string) {
     return hex
 }
 
-function hslHsv(x: number, y: number, z: number, symbols = true, multiply = true) {
+function hslHsv(x: number, y: number, z: number, symbols = true, percent = true) {
     x = Math.round(x)
-    y = Math.round(y * (multiply ? 100 : 1))
-    z = Math.round(z * (multiply ? 100 : 1))
+    y = Math.round(y * (percent ? 100 : 1))
+    z = Math.round(z * (percent ? 100 : 1))
     if (symbols) return [x + '°', y + '%', z + '%']
     return [x, y, z]
 }
 
-export function formatHSL(hsl: HSL | undefined, symbols: boolean = true, multiply: boolean = true) {
-    return hslHsv(hsl?.h || 0, hsl?.s || 0, hsl?.l || 0, symbols, multiply)
+export function formatHSL(hsl: HSL | undefined, symbols: boolean = true, percent: boolean = true) {
+    return hslHsv(hsl?.h || 0, hsl?.s || 0, hsl?.l || 0, symbols, percent)
 }
 
-export function formatHSV(hsv: HSV | undefined, symbols: boolean = true, multiply: boolean = true) {
-    return hslHsv(hsv?.h || 0, hsv?.s || 0, hsv?.v || 0, symbols, multiply)
+export function formatHSV(hsv: HSV | undefined, symbols: boolean = true, percent: boolean = true) {
+    return hslHsv(hsv?.h || 0, hsv?.s || 0, hsv?.v || 0, symbols, percent)
 }
 
 export function removeHash(hex: string) {

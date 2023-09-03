@@ -1,4 +1,4 @@
-import { randomPalette } from '@/util/palette'
+import PaletteGenerator from '@/core/PaletteGenerator'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(req: NextRequest) {
@@ -11,6 +11,6 @@ export async function GET(req: NextRequest) {
         })
     }
 
-    const palette = randomPalette(length)
+    const palette = new PaletteGenerator().getRandomPalette()
     return NextResponse.json(palette)
 }

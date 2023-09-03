@@ -1,7 +1,7 @@
 'use client'
 
-import { HexAndName } from '@/common/types'
 import PaletteNavBar from '@/components/PaletteNavBar'
+import { HexAndName } from '@/core/types'
 import { removeHash } from '@/util/colorFormat'
 import axios from 'axios'
 import { useEffect, useState } from 'react'

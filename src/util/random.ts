@@ -12,8 +12,6 @@ export function choose<T>(array: T[]): T {
 export function chooseWeighted<T extends string>(options: T[], weights: WeightedOptions<T>): T {
     const totalWeight = options.reduce((acc, option) => acc + weights[option], 0)
 
-    if (totalWeight === 0) throw new Error('Total weight must be greater than 0')
-
     const randomWeight = Math.random() * totalWeight
     let cumulativeWeight = 0
 
@@ -25,11 +23,4 @@ export function chooseWeighted<T extends string>(options: T[], weights: Weighted
     }
 
     return options[options.length - 1]
-}
-
-// Função que retorna uma cor aleatória em hexadecimal
-export function getRandomColor(): string {
-    const randomColor = Math.floor(Math.random() * 16777215).toString(16)
-    const paddedColor = randomColor.padStart(6, '0')
-    return `#${paddedColor}`
 }

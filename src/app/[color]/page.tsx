@@ -6,7 +6,8 @@ import Footer from '@/components/Footer'
 import NavBar from '@/components/NavBar'
 import Palette from '@/components/Palette'
 import RegenerateColorMobileButton from '@/components/RegenerateColorMobileButton'
-import { ColorInfo, getColorInfo } from '@/util/color'
+import ColorInfo from '@/core/ColorInfo'
+import { IColorInfo } from '@/core/types'
 import { getFullLengthHex, isValidColor, removeHash } from '@/util/colorFormat'
 import { Metadata } from 'next'
 import { notFound, redirect } from 'next/navigation'
@@ -21,7 +22,7 @@ interface ColorPageProps {
     }
 }
 
-let data: ColorInfo | null = null
+let data: IColorInfo | null = null
 
 export async function generateMetadata(): Promise<Metadata> {
     if (!data) return {}
@@ -48,7 +49,7 @@ export default async function ColorPage({ params, searchParams }: ColorPageProps
     if (!isValidColor(color)) return notFound()
     if (removeHash(color).length === 3) return redirect(`/${getFullLengthHex(color)}`)
 
-    data = await getColorInfo(color)
+    data = new ColorInfo().getColorInfo(color)
 
     const items: Item[] = [
         {

@@ -1,6 +1,6 @@
 'use client'
 
-import { ISuggestion } from '@/common/types'
+import { ISuggestion } from '@/core/types'
 import { isValidColor, removeHash } from '@/util/colorFormat'
 import { formatQuery } from '@/util/format'
 import { Transition } from '@headlessui/react'
@@ -12,7 +12,12 @@ import { useEffect, useState } from 'react'
 import { HexColorPicker } from 'react-colorful'
 import { twMerge } from 'tailwind-merge'
 
-export function Suggestion({ data, size }: { data: ISuggestion; size: 'md' | 'xl' }) {
+interface SuggestionProps {
+    data: ISuggestion
+    size: 'md' | 'xl'
+}
+
+export function Suggestion({ data, size }: SuggestionProps) {
     return (
         <Link
             className={twMerge(

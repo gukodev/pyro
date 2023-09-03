@@ -1,5 +1,5 @@
-import { HexAndName } from '@/common/types'
-import { getNearestColorName } from '@/util/color'
+import ColorInfo from '@/core/ColorInfo'
+import { HexAndName } from '@/core/types'
 import { addHash, isValidColor, removeHash } from '@/util/colorFormat'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
@@ -22,7 +22,7 @@ const parseColors = (colors: string): HexAndName[] => {
     c.forEach((color, i) => {
         res.push({
             hex: color,
-            name: getNearestColorName(color),
+            name: new ColorInfo().getNearestColorName(color),
         })
     })
 

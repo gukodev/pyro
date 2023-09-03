@@ -1,6 +1,6 @@
 'use client'
 
-import { ColorInfo } from '@/util/color'
+import { IColorInfo } from '@/core/types'
 import { getPredominantColors, removeHash } from '@/util/colorFormat'
 import { wcagContrast } from 'culori'
 import Link from 'next/link'
@@ -8,7 +8,7 @@ import { twMerge } from 'tailwind-merge'
 import Copyable from './Copyable'
 
 interface ColorCardProps {
-    data: ColorInfo
+    data: IColorInfo
 }
 
 export default function ColorCard({ data }: ColorCardProps) {

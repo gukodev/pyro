@@ -1,6 +1,6 @@
 'use client'
 
-import { HexAndName } from '@/common/types'
+import { HexAndName } from '@/core/types'
 import { removeHash } from '@/util/colorFormat'
 import { twMerge } from 'tailwind-merge'
 import Color from './Color'

@@ -1,4 +1,4 @@
-import { getSuggestions } from '@/util/color'
+import ColorInfo from '@/core/ColorInfo'
 import { formatQuery } from '@/util/format'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -15,7 +15,7 @@ export async function GET(req: NextRequest, { params }: Context) {
         const formattedQuery = formatQuery(query)
         if (!formattedQuery) return NextResponse.json({ error: true }, { status: 400 })
 
-        const suggestions = await getSuggestions(formattedQuery)
+        const suggestions = new ColorInfo().getSuggestions(formattedQuery)
 
         return NextResponse.json({
             query,

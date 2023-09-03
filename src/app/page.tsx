@@ -6,7 +6,8 @@ import Footer from '@/components/Footer'
 import NavBar from '@/components/NavBar'
 import Palette from '@/components/Palette'
 import ResetTimer from '@/components/ResetTimer'
-import { ColorInfo, getDailyColor } from '@/util/color'
+import ColorInfo from '@/core/ColorInfo'
+import { IColorInfo } from '@/core/types'
 import { removeHash } from '@/util/colorFormat'
 import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
@@ -19,7 +20,7 @@ export interface Item {
     component: React.ReactNode
 }
 
-let data: ColorInfo | null = null
+let data: IColorInfo | null = null
 
 export async function generateMetadata(): Promise<Metadata> {
     if (!data) return {}
@@ -40,7 +41,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Home() {
-    data = await getDailyColor()
+    data = new ColorInfo().getDailyColor()
 
     const items: Item[] = [
         {

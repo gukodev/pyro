@@ -1,11 +1,11 @@
 'use client'
 
 import Copyable from '@/components/Copyable'
-import { ColorInfo } from '@/util/color'
+import { IColorInfo } from '@/core/types'
 import { formatCMYK, formatHSL, formatHSV } from '@/util/colorFormat'
 
 interface ColorDetailsProps {
-    data: ColorInfo
+    data: IColorInfo
 }
 
 interface InfoItem {

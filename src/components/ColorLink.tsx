@@ -1,9 +1,9 @@
-import { ColorInfo, DarkColor } from '@/util/color'
+import { HexAndName, IColorInfo } from '@/core/types'
 import { removeHash } from '@/util/colorFormat'
 import Link from 'next/link'
 
 interface ColorLinkProps {
-    info: ColorInfo | DarkColor
+    info: IColorInfo | HexAndName
     center?: boolean
 }
 

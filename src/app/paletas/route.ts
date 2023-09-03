@@ -1,10 +1,10 @@
+import PaletteGenerator from '@/core/PaletteGenerator'
 import { removeHash } from '@/util/colorFormat'
-import { randomPalette } from '@/util/palette'
 import { NextRequest, NextResponse } from 'next/server'
 
 const getPaletteParam = () => {
-    const palette = randomPalette(5).colors
-    return palette.map(({ hex }) => removeHash(hex)).join('-')
+    const { colors } = new PaletteGenerator().getRandomPalette()
+    return colors.map(({ hex }) => removeHash(hex)).join('-')
 }
 
 export async function GET(req: NextRequest) {
