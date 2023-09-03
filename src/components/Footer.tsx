@@ -101,7 +101,7 @@ export default function Footer() {
                 </div>
                 <div className='w-full h-[2px] bg-slate-300 my-16' />
                 <div className='block text-sm'>
-                    <span>
+                    <span className='block'>
                         Criado com{' '}
                         <Heart weight='fill' className='inline text-red-500 text-xl heart-pulse' />{' '}
                         por{' '}
@@ -113,6 +113,13 @@ export default function Footer() {
                             GitHub
                         </Link>{' '}
                         😊
+                    </span>
+                    <span className='block'>
+                        Dados de cores fornecidos por{' '}
+                        <Link href='https://github.com/meodai/color-names' underline>
+                            color-names
+                        </Link>{' '}
+                        🎨
                     </span>
                 </div>
             </div>
