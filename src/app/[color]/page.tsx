@@ -16,6 +16,9 @@ interface ColorPageProps {
     params: {
         color: string
     }
+    searchParams?: {
+        r?: string
+    }
 }
 
 let data: ColorInfo | null = null
@@ -38,8 +41,9 @@ export async function generateMetadata(): Promise<Metadata> {
     }
 }
 
-export default async function ColorPage({ params }: ColorPageProps) {
+export default async function ColorPage({ params, searchParams }: ColorPageProps) {
     const { color } = params
+    const fromRandom = searchParams?.r === '' || !!searchParams?.r
 
     if (!isValidColor(color)) return notFound()
     if (removeHash(color).length === 3) return redirect(`/${getFullLengthHex(color)}`)
@@ -72,7 +76,7 @@ export default async function ColorPage({ params }: ColorPageProps) {
     return (
         <>
             <main className='mb-48'>
-                <RegenerateColorMobileButton />
+                <RegenerateColorMobileButton fromRandom={fromRandom} />
                 <NavBar />
                 <div className='w-full max-w-screen-lg mx-auto px-4'>
                     <div className='flex flex-col gap-8'>

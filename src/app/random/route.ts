@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
     return new NextResponse(null, {
         status: 302,
         headers: {
-            Location: url.toString(),
+            Location: url.toString() + '?r',
         },
     })
 }
