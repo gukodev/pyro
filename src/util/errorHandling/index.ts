@@ -30,18 +30,18 @@ export async function sendErrorReport(
     const errorFields = [
         {
             name: 'Mensagem',
-            value: '```' + error.message + '```',
+            value: '```\n' + error.message.slice(0, 1000) + '\n```',
         },
         {
             name: 'Stack',
-            value: '```' + error.stack + '```',
+            value: '```\n' + error.stack.slice(0, 1000) + '\n```',
         },
     ]
 
     if (message) {
         errorFields.push({
             name: 'Mensagem adicional',
-            value: '```' + message + '```',
+            value: '```\n' + message.slice(0, 1000) + '\n```',
         })
     }
 
@@ -62,10 +62,9 @@ export async function sendErrorReport(
         timestamp: info.isoDate,
     }
 
-    try {
-        await axios.post(webhookUrl, { embeds: [embed] })
-        console.log('[Error Report] Um erro foi reportado com sucesso.')
-    } catch (err) {
-        console.error('[Error Report] Não foi possível reportar um erro:', err)
-    }
+    console.log('data', embed)
+
+    return axios.post(webhookUrl, {
+        embeds: [embed],
+    })
 }
