@@ -152,14 +152,13 @@ export function randomPalette(length: number = 5): RandomPaletteReturn {
     const color = getRandomColor()
     const HSV = hsv(color) as Hsv
 
-    type Options = 'tints' | 'shades' | 'analogous' | 'random'
-    const options: Options[] = ['tints', 'shades', 'analogous', 'random']
+    type Options = 'tints' | 'shades' | 'random'
+    const options: Options[] = ['tints', 'shades', 'random']
 
     const weights = {
-        tints: 0.1,
-        shades: 0.1,
-        analogous: 0.2,
-        random: 0.6,
+        tints: 0.15,
+        shades: 0.15,
+        random: 0.7,
     }
 
     const type = chooseWeighted<Options>(options, weights)
@@ -172,14 +171,12 @@ export function randomPalette(length: number = 5): RandomPaletteReturn {
         case 'shades':
             colors = shades(HSV, length)
             break
-        case 'analogous':
-            colors = analogous(HSV, length)
-            break
         case 'random':
             let _colors: HexAndName[] = []
+
             while (_colors.length < length) {
                 const addColor = getRandomNamedColor()
-                if (!colors.filter((x) => x === addColor.hex).length)
+                if (!_colors.filter((x) => x.hex === addColor.hex).length)
                     _colors.push({
                         hex: addColor.hex,
                         name: addColor.name,
