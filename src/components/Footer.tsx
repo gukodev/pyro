@@ -79,16 +79,16 @@ export default function Footer() {
                 },
             ],
         },
-        {
-            title: 'API',
-            items: [
-                {
-                    label: 'Documentação',
-                    type: 'link',
-                    href: '/docs',
-                },
-            ],
-        },
+        // {
+        //     title: 'API',
+        //     items: [
+        //         {
+        //             label: 'Documentação',
+        //             type: 'link',
+        //             href: '/docs',
+        //         },
+        //     ],
+        // },
     ]
 
     return (
