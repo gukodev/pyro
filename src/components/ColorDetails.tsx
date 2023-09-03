@@ -47,9 +47,9 @@ export default function ColorDetails({ data }: ColorDetailsProps) {
                 {info.map((item, index) => (
                     <tr key={index}>
                         <td className='w-fit pr-10'>
-                            <h2 className='text-2xl font-bold'>{item.label}</h2>
+                            <h2 className='text-xl md:text-2xl font-bold'>{item.label}</h2>
                         </td>
-                        <td className='w-full text-lg'>
+                        <td className='w-full text-md md:text-lg'>
                             <Copyable value={item.value} side='right' />
                         </td>
                     </tr>

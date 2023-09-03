@@ -32,7 +32,7 @@ export default function ColorCard({ data }: ColorCardProps) {
                 )}
             >
                 <Link
-                    className='text-4xl hover:opacity-75 transition-opacity'
+                    className='text-2xl sm:text-3xl md:text-4xl hover:opacity-75 transition-opacity'
                     href={`/${removeHash(hex)}`}
                 >
                     {name}
@@ -41,7 +41,7 @@ export default function ColorCard({ data }: ColorCardProps) {
             </div>
             <div
                 className={twMerge(
-                    'absolute bottom-0 left-0 p-4 w-full opacity-90 text-lg',
+                    'absolute bottom-0 left-0 p-4 w-full opacity-90 md:text-lg text-md',
                     textColor
                 )}
             >
