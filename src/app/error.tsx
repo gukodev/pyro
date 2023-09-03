@@ -7,6 +7,7 @@ import { ErrorReportBody } from '@/util/errorHandling/types'
 import axios from 'axios'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import { toast } from 'react-hot-toast'
 
 const metadata = {
     title: 'pyro - um erro ocorreu!',
@@ -63,23 +64,25 @@ export default function Error({ error }: { error: Error }) {
                 const data = res.data
 
                 if (data.success) {
-                    alert(
+                    toast.success(
                         'Erro reportado com sucesso! Obrigado por nos ajudar a melhorar o site :)'
                     )
                     return
                 } else {
-                    alert('Ocorreu um erro ao reportar o erro. Tente novamente mais tarde.')
+                    toast.error('Ocorreu um erro ao reportar o erro. Tente novamente mais tarde.')
                     console.log(data)
                 }
             })
             .catch((err) => {
                 const data = err.response?.data
                 if (data && data.rateLimited) {
-                    alert('Você já reportou um erro recentemente. Tente novamente mais tarde!')
+                    toast.error(
+                        'Você já reportou um erro recentemente. Tente novamente mais tarde!'
+                    )
                     return
                 }
 
-                alert('Ocorreu um erro ao reportar o erro. Tente novamente mais tarde.')
+                toast.error('Ocorreu um erro ao reportar o erro. Tente novamente mais tarde.')
                 console.log(err)
             })
             .finally(() => {

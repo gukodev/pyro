@@ -5,6 +5,7 @@ import PaletteNavBar from '@/components/PaletteNavBar'
 import { removeHash } from '@/util/colorFormat'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
+import { toast } from 'react-hot-toast'
 import Advice from './Advice'
 import Colors from './Colors'
 import ShortcutHandler from './ShortcutHandler'
@@ -58,7 +59,7 @@ export default function PaletteGenerator({
 
     const handleCopyColor = (hex: string) => {
         navigator.clipboard.writeText(hex).then(() => {
-            alert('Copiado!')
+            toast.success('Copiado!')
         })
     }
 

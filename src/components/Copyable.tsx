@@ -1,23 +1,32 @@
 import { Copy } from '@/assets/icons'
+import { toast } from 'react-hot-toast'
 
 type CopyableProps = {
     value: string
     label?: string
     side?: 'left' | 'right'
+    successMessage?: string
+    errorMessage?: string
 }
 
 const icon = <Copy size={18} weight='fill' />
 
-export default function Copyable({ value, label = value, side = 'left' }: CopyableProps) {
+export default function Copyable({
+    value,
+    label = value,
+    side = 'left',
+    successMessage = 'Copiado!',
+    errorMessage = 'Ocorreu um erro ao copiar!',
+}: CopyableProps) {
     const copy = () => {
         navigator.clipboard
             .writeText(value)
             .then(() => {
-                return alert('✅ Copiado com sucesso.')
+                toast.success(successMessage)
             })
             .catch((err) => {
                 console.log(err)
-                alert('Não foi possível copiar a cor.')
+                toast.error(errorMessage)
             })
     }
 
