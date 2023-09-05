@@ -43,7 +43,7 @@ export default function NavBar() {
                         <div className='flex flex-col gap-8 mt-8'>
                             <SearchInput className='w-full' size='xl' />
                             <MobileNavLink href='/'>Início</MobileNavLink>
-                            <MobileNavLink href='/paletas'>Paletas</MobileNavLink>
+                            <MobileNavLink href='/palette'>Paletas</MobileNavLink>
                             <MobileNavLink href='/random' legacy>
                                 Cor aleatória
                             </MobileNavLink>
@@ -57,7 +57,7 @@ export default function NavBar() {
                     🔥 pyro
                 </Link>
                 <div className='hidden md:flex items-center gap-4'>
-                    <Link href='/paletas' passHref>
+                    <Link href='/palette' passHref>
                         <Button ghost>
                             <Palette size={22} weight='bold' />
                             Paletas

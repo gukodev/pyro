@@ -51,7 +51,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default function Page(ctx: Context) {
     let colors = parseColors(ctx.params.colors)
-    if (colors.length < 3 || colors.length > 8) return redirect('/paletas')
+    if (colors.length < 3 || colors.length > 8) return redirect('/palette')
 
     const validParam = colors.map(({ hex }) => removeHash(hex)).join('-')
     faviconColor = colors[0].hex

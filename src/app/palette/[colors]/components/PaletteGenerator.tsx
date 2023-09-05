@@ -53,7 +53,7 @@ export default function PaletteGenerator({
         window.history.replaceState(
             null,
             '',
-            `/paletas/${colors.map(({ hex }) => removeHash(hex)).join('-')}`
+            `/palette/${colors.map(({ hex }) => removeHash(hex)).join('-')}`
         )
     }
 
@@ -91,8 +91,8 @@ export default function PaletteGenerator({
 
     useEffect(() => {
         const history = window.location.pathname
-        if (history !== `/paletas/${validParam}`)
-            window.history.pushState(null, '', `/paletas/${validParam}`)
+        if (history !== `/palette/${validParam}`)
+            window.history.pushState(null, '', `/palette/${validParam}`)
     }, [])
 
     return (

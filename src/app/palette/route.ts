@@ -9,7 +9,7 @@ const getPaletteParam = () => {
 
 export async function GET(req: NextRequest) {
     const url = req.nextUrl.clone()
-    url.pathname = `/paletas/${getPaletteParam()}`
+    url.pathname = `/palette/${getPaletteParam()}`
 
     return new NextResponse(null, {
         status: 302,

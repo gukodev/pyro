@@ -11,7 +11,7 @@ const footerItems: FooterItemType[] = [
             {
                 label: 'Paletas',
                 type: 'link',
-                href: '/paletas',
+                href: '/palette',
             },
             {
                 label: 'Cor aleatória',
