@@ -27,12 +27,17 @@ const footerItems: FooterItemType[] = [
             {
                 label: 'Sobre o projeto',
                 type: 'link',
-                href: '/sobre',
+                href: '/about',
             },
             {
                 label: 'Código-fonte',
                 type: 'link',
-                href: '/sobre#codigo-fonte',
+                href: '/about#source-code',
+            },
+            {
+                label: 'Atribuições',
+                type: 'link',
+                href: '/about#attributions',
             },
         ],
     },
@@ -74,7 +79,7 @@ export default function Footer() {
                     </span>
                     <span className='block'>
                         Dados de cores fornecidos por{' '}
-                        <FooterLink href='https://github.com/meodai/color-names' underline>
+                        <FooterLink href={process.env.COLORNAMES_REPO} underline>
                             color-names
                         </FooterLink>{' '}
                         🎨
