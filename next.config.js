@@ -1,9 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     env: {
-        AUTHOR_NAME: 'Gustavo Rocha',
-        GITHUB_AUTHOR: 'https://github.com/umgustavo',
-        GITHUB_REPO: 'https://github.com/umgustavo/pyro',
+        AUTHOR_NAME: 'guko',
+        GITHUB_AUTHOR: 'https://github.com/gukodev',
+        GITHUB_REPO: 'https://github.com/gukodev/pyro',
         COLORNAMES_REPO: 'https://github.com/meodai/color-names',
     },
 }
